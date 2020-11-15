@@ -2,8 +2,8 @@ package com.twelve;
 
 public class Word extends Token{
 	public final String str;
-	public Word(String str) {
-		super(Tag.ID);
+	public Word(String tag,String str) {
+		super(tag);
 		this.str = str;
 	}
 

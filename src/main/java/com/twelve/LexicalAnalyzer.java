@@ -7,7 +7,8 @@ public class LexicalAnalyzer {
 	Hashtable<String, Word> words;
 	
 	public LexicalAnalyzer() {
-		
+		reserve(new Word(Tag.TRUE, "true"));
+		reserve(new Word(Tag.FALSE, "false"));
 	}
 	
 	public void reserve(Word w) {
