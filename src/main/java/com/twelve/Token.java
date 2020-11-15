@@ -1,8 +1,8 @@
 package com.twelve;
 
 public class Token {
-	public final int tag;
-	public Token(int t) {
+	public final String tag;
+	public Token(String t) {
 		tag = t;
 	}
 }
