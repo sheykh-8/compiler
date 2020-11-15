@@ -1,7 +1,18 @@
 package com.twelve;
 
+import java.util.Hashtable;
+
 public class LexicalAnalyzer {
 	char characterWatch;
+	Hashtable<String, Word> words;
+	
+	public LexicalAnalyzer() {
+		
+	}
+	
+	public void reserve(Word w) {
+		words.put(w.str, w);
+	}
 	
 //	public void scan(StringBuilder str) {
 //		int i = 0;
