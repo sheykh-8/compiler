@@ -1,31 +1,41 @@
 package com.twelve;
 
-import java.util.Hashtable;
+import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 public class LexicalAnalyzer {
-	char characterWatch;
-	Hashtable<String, Word> words;
-	
-	public LexicalAnalyzer() {
-		reserve(new Word(Tag.TRUE, "true"));
-		reserve(new Word(Tag.FALSE, "false"));
-	}
-	
-	public void reserve(Word w) {
-		words.put(w.str, w);
-	}
-	
-//	public void scan(StringBuilder str) {
-//		int i = 0;
-//		
-//		while (i < str.length()) {
-//			characterWatch = str.charAt(i);
-//			if (characterWatch == ' ' || characterWatch == '\t') {
-//				str.deleteCharAt(i);
-//			}
-//			i++;
-//		}
-//		System.out.println(str);
-//	}
-	
+
+
+    private static final String braces = "{[]}";
+
+    public static ArrayList<String> scan(String line) {
+
+        StringBuilder stringBuilder = new StringBuilder();
+
+        cursor:
+        for (int i = 0; i < line.length(); i++) {
+
+            for (int j = 0; j < braces.length(); j++)
+                if (line.charAt(i) == braces.charAt(j)) {
+                    stringBuilder.append(' ');
+                    stringBuilder.append(line.charAt(i));
+                    stringBuilder.append(' ');
+                    break cursor;
+                }
+            stringBuilder.append(line.charAt(i));
+        }
+
+
+        ArrayList<String> tokens = new ArrayList<>();
+
+        StringTokenizer tokenizer = new StringTokenizer(stringBuilder.toString());
+
+        while (tokenizer.hasMoreTokens())
+            tokens.add(tokenizer.nextToken());
+
+
+        return tokens;
+    }
+
+
 }
