@@ -8,7 +8,7 @@ public class LexicalAnalyzer {
 		
 		while (i < str.length()) {
 			characterWatch = str.charAt(i);
-			if (characterWatch == ' ') {
+			if (characterWatch == ' ' || characterWatch == '\t') {
 				str.deleteCharAt(i);
 			}
 			i++;
