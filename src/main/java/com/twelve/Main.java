@@ -1,10 +1,12 @@
 package com.twelve;
 
+import java.util.ArrayList;
+
 public class Main {
 
 
     public static void main(String[] args) {
-        LexicalAnalyzer.scan("");
+        ArrayList<String> tokens = LexicalAnalyzer.scan("");
 
     }
 }
