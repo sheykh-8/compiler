@@ -26,7 +26,7 @@ public class SymbolTable {
     private static SymbolTable INSTANCE;
 
 
-    private Hashtable<Integer, Word> table; //TODO: consider changing the structure of table
+    private Hashtable<Integer, Token> table; //TODO: consider changing the structure of table
 
     public SymbolTable() {
         this.table = new Hashtable<>();
@@ -40,12 +40,12 @@ public class SymbolTable {
         return INSTANCE;
     }
 
-    public void addSymbol(Integer tag, Word scope) {
+    public void addSymbol(Integer tag, Token scope) {
         this.table.put(tag, scope);
     }
+    
 
-
-    public Word lookup (Integer tag) {
+    public Token lookup (Integer tag) {
         return this.table.get(tag);
     }
 
