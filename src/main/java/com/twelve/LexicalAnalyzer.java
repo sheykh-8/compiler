@@ -11,11 +11,20 @@ public class LexicalAnalyzer {
     private static final String braces = "{[]}";
     
     public LexicalAnalyzer() {
-
+    	reservedTokens = new Hashtable<Integer, Word>();
+    	
+    	reserve(Tag.TRUE, new Word(Tag.TRUE, "true"));
+    	reserve(Tag.FALSE, new Word(Tag.FALSE, "false"));
+    	reserve(Tag.IF, new Word(Tag.IF, "agar"));
+    	reserve(Tag.ELSE, new Word(Tag.ELSE, "else"));
+    	reserve(Tag.WHILE, new Word(Tag.WHILE, "ta"));
+    	reserve(Tag.BIG, new Word(Tag.BIG, "&B"));
+    	reserve(Tag.SMALL, new Word(Tag.SMALL, "&K"));
+    	reserve(Tag.EQUAL, new Word(Tag.EQUAL, "&MM"));
     }
     
-    public static void reserve() {
-    	
+    public void reserve(Integer tag, Word t) {
+    	reservedTokens.put(tag, t);
     }
     
     public static ArrayList<String> scan(String line) {
