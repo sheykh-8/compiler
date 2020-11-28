@@ -5,7 +5,7 @@ import java.util.StringTokenizer;
 
 public class LexicalAnalyzer {
 
-	SymbolTable symbolTable = new SymbolTable();
+	SymbolTable reservedTokens = new SymbolTable();
 	
     private static final String braces = "{[]}";
     
