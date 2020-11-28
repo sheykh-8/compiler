@@ -5,28 +5,28 @@ import java.util.Hashtable;
 
 public class SymbolTable {
 
-    public class Symbol {
-        private final String type;
-        private final String scope;
-
-        public Symbol(String type, String scope) {
-            this.type = type;
-            this.scope = scope;
-        }
-
-        public String getType() {
-            return type;
-        }
-
-        public String getScope() {
-            return scope;
-        }
-    }
+//    public class Word {
+//        private final String type;
+//        private final String scope;
+//
+//        public Word(String type, String scope) {
+//            this.type = type;
+//            this.scope = scope;
+//        }
+//
+//        public String getType() {
+//            return type;
+//        }
+//
+//        public String getScope() {
+//            return scope;
+//        }
+//    }
 
     private static SymbolTable INSTANCE;
 
 
-    private Hashtable<String, Symbol> table; //TODO: consider changing the structure of table
+    private Hashtable<String, Word> table; //TODO: consider changing the structure of table
 
     public SymbolTable() {
         this.table = new Hashtable<>();
@@ -40,12 +40,12 @@ public class SymbolTable {
         return INSTANCE;
     }
 
-    public void addSymbol(String name, Symbol symbol) {
+    public void addSymbol(String name, Word symbol) {
         this.table.put(name, symbol);
     }
 
 
-    public Symbol lookup (String name) {
+    public Word lookup (String name) {
         return this.table.get(name);
     }
 
