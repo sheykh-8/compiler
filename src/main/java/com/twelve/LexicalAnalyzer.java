@@ -21,6 +21,9 @@ public class LexicalAnalyzer {
     	reserve(Tag.BIG, new Word(Tag.BIG, "&B"));
     	reserve(Tag.SMALL, new Word(Tag.SMALL, "&K"));
     	reserve(Tag.EQUAL, new Word(Tag.EQUAL, "&MM"));
+    	reserve(Tag.ASSIGN, new Word(Tag.ASSIGN, "="));
+    	reserve(Tag.BIG_EQUAL, new Word(Tag.BIG_EQUAL, "&BM"));
+    	reserve(Tag.SMALL_EQUAL, new Word(Tag.SMALL_EQUAL, "&KM"));
     }
     
     public void reserve(Integer tag, Word t) {
