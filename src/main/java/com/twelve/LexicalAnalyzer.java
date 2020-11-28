@@ -5,9 +5,14 @@ import java.util.StringTokenizer;
 
 public class LexicalAnalyzer {
 
-
+	SymbolTable symbolTable = new SymbolTable();
+	
     private static final String braces = "{[]}";
-
+    
+    public static void reserve() {
+    	
+    }
+    
     public static ArrayList<String> scan(String line) {
 
         StringBuilder stringBuilder = new StringBuilder();
