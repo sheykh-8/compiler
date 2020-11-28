@@ -28,7 +28,7 @@ public class SymbolTable {
 
     private Hashtable<String, Symbol> table; //TODO: consider changing the structure of table
 
-    private SymbolTable() {
+    public SymbolTable() {
         this.table = new Hashtable<>();
     }
 
