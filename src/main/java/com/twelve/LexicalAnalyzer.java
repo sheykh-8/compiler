@@ -24,6 +24,16 @@ public class LexicalAnalyzer {
     	reserve(Tag.ASSIGN, new Word(Tag.ASSIGN, "="));
     	reserve(Tag.BIG_EQUAL, new Word(Tag.BIG_EQUAL, "&BM"));
     	reserve(Tag.SMALL_EQUAL, new Word(Tag.SMALL_EQUAL, "&KM"));
+    	reserve(Tag.INT, new Word(Tag.INT, "Sahih"));
+    	reserve(Tag.FLOAT, new Word(Tag.FLOAT, "Ashari"));
+    	reserve(Tag.CHAR, new Word(Tag.CHAR, "Harf"));
+    	reserve(Tag.ADD, new Word(Tag.ADD, "Jam"));
+    	reserve(Tag.INC, new Word(Tag.INC, "YekiBala"));
+    	reserve(Tag.SUB, new Word(Tag.SUB, "Kam"));
+    	reserve(Tag.DEC, new Word(Tag.DEC, "YekiPain"));
+    	reserve(Tag.MUL, new Word(Tag.MUL, "Zarb"));
+    	reserve(Tag.DIV, new Word(Tag.DIV, "Tagsim"));
+    	reserve(Tag.REMAIN, new Word(Tag.REMAIN, "BagiMonde"));
     }
     
     public void reserve(Integer tag, Word t) {
