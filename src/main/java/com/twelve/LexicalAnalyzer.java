@@ -1,13 +1,18 @@
 package com.twelve;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 public class LexicalAnalyzer {
 
-	SymbolTable reservedTokens = new SymbolTable();
+	private Hashtable<Integer, Word> reservedTokens;
 	
     private static final String braces = "{[]}";
+    
+    public LexicalAnalyzer() {
+
+    }
     
     public static void reserve() {
     	
