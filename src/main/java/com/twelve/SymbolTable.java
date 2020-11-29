@@ -1,7 +1,6 @@
 package com.twelve;
 
-import java.util.Hashtable;
-
+import java.util.ArrayList;
 
 public class SymbolTable {
 
@@ -23,30 +22,28 @@ public class SymbolTable {
 //        }
 //    }
 
-    private static SymbolTable INSTANCE;
+	private static SymbolTable INSTANCE;
 
+	private ArrayList<Token> table; // TODO: consider changing the structure of table
 
-    private Hashtable<Integer, Token> table; //TODO: consider changing the structure of table
+	public SymbolTable() {
+		this.table = new ArrayList<Token>();
+	}
 
-    public SymbolTable() {
-        this.table = new Hashtable<>();
-    }
+	public static SymbolTable getInstance() {
+		if (INSTANCE == null) {
+			INSTANCE = new SymbolTable();
+		}
 
-    public static SymbolTable getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new SymbolTable();
-        }
+		return INSTANCE;
+	}
 
-        return INSTANCE;
-    }
+	public void addSymbol(Token token) {
+		this.table.add(token);
+	}
 
-    public void addSymbol(Integer tag, Token scope) {
-        this.table.put(tag, scope);
-    }
-    
-
-    public Token lookup (Integer tag) {
-        return this.table.get(tag);
-    }
+	public Token lookup(Integer tag) {
+		return this.table.get(tag);
+	}
 
 }
