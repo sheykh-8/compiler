@@ -5,16 +5,12 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 
 public class LexicalAnalyzer {
-
-	
-	
     private static final String braces = "{[]}";
+    private ReservedKeywords reservedKeywords;
     
     public LexicalAnalyzer() {
-    	
+    	reservedKeywords = new ReservedKeywords();
     }
-    
-
     
     public static ArrayList<String> scan(String line) {
 
