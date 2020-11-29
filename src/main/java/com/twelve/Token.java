@@ -16,4 +16,12 @@ public class Token {
 		this.tag = tag;
 		this.number = number;
 	}
+
+	public Integer getTag() {
+		return tag;
+	}
+
+	public String getScope() {
+		return scope;
+	}
 }
