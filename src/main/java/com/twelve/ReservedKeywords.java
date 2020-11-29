@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ReservedKeywords {
 //	private Hashtable<Integer, Token> reservedTokens;
 	private ArrayList<Token> reservedTokens;
+	private Token tempToken;
 
 	public ReservedKeywords() {
 		reservedTokens = new ArrayList<Token>();
@@ -59,6 +60,8 @@ public class ReservedKeywords {
 	}
 	
 	public void lookup(String scope) {
-		
+		if (tempToken.getScope() != null) {
+			
+		}
 	}
 }
