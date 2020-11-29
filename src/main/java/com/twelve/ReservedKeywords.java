@@ -57,4 +57,8 @@ public class ReservedKeywords {
 	public void reserve(Token t) {
 		reservedTokens.add(t);
 	}
+	
+	public void lookup(String scope) {
+		
+	}
 }
