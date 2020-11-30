@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class ReservedKeywords {
 //	private Hashtable<Integer, Token> reservedTokens;
 	private ArrayList<Token> reservedTokens;
+	private int index = 0;
 
 	public ReservedKeywords() {
 		reservedTokens = new ArrayList<Token>();
@@ -58,7 +59,12 @@ public class ReservedKeywords {
 		reservedTokens.add(t);
 	}
 	
-	public void lookup(String scope) {
-		
+	public boolean lookup(String scope) {
+		while (reservedTokens.get(index) != null) {
+			if (scope == reservedTokens.get(index).getScope()) {
+				return true;
+			}
+		}
+		return false;
 	}
 }
