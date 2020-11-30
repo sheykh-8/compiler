@@ -17,3 +17,5 @@ gradle-app.setting
 ### Gradle Patch ###
 **/build/
 /bin/
+/compiler.uml
+/compiler.umlcd
