@@ -31,6 +31,15 @@ public class ReservedKeywords {
 		reserve(new Token(Tag.MUL, "Zarb"));
 		reserve(new Token(Tag.DIV, "Tagsim"));
 		reserve(new Token(Tag.REMAIN, "BagiMonde"));
+		reserve(new Token(Tag.OPEN_PARANTHESES, "("));
+		reserve(new Token(Tag.CLOSE_PARANTHESES, ")"));
+		reserve(new Token(Tag.OPEN_BRACES, "["));
+		reserve(new Token(Tag.CLOSE_BRACES, "]"));
+		reserve(new Token(Tag.TERMINATOR, "^"));
+		reserve(new Token(Tag.QUOTATIONS, "\""));
+		reserve(new Token(Tag.COMA, ","));
+		reserve(new Token(Tag.SCAN, "Begir"));
+		reserve(new Token(Tag.PRINT, "Benevis"));
 
 //    	reserve(Tag.TRUE, new Token(Tag.TRUE, "true"));
 //    	reserve(Tag.FALSE, new Token(Tag.FALSE, "false"));
@@ -59,7 +68,7 @@ public class ReservedKeywords {
 		reservedTokens.add(t);
 	}
 	
-	public boolean lookup(String scope) {
+	public boolean isKeyword(String scope) {
 		while (reservedTokens.get(index) != null) {
 			if (scope == reservedTokens.get(index).getScope()) {
 				return true;
