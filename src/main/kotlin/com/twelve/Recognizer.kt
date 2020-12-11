@@ -13,16 +13,20 @@ class Recognizer constructor(private val reader: Reader) {
     private fun extractTokens() {
         var state = 0
         var i = reader.read()
+        var sb = ""
 
         while (i != -1) {
             val ch = i.toChar()
 
             if (ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
-                checkToken(state)
-
+                checkToken(state, sb)
+                sb = ""
                 state = 0
+                continue
             }
+
+            sb += ch
 
 
             i = reader.read()
@@ -360,7 +364,7 @@ class Recognizer constructor(private val reader: Reader) {
         return -1
     }
 
-    private fun checkToken(state: Int) {
+    private fun checkToken(state: Int, vaule: String) {
         //TODO: finish this function. recognize the tokens based on the value of state and insert the value in the symbol table
 
         val table = SymbolTable.getInstance()
