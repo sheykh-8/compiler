@@ -1,15 +1,14 @@
 package com.twelve;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.ArrayList;
 
 public class Main {
 	LexicalAnalyzer lexicalAnalyzer = new LexicalAnalyzer();
 
 	public static void main(String[] args) {
+
+		//Give a file name as command-line argument to compiler to run the scanner.
 		if (args.length > 0) {
 			File f = new File(args[0]);
 			try {
