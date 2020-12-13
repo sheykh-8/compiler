@@ -1,27 +1,20 @@
 package com.twelve;
 
 public class Token {
-	public Integer tag; // Works as the terminal
-	public String scope; // Scope for characters
-	public int number; // Scope for numbers
+	public Integer tag; // Works as the token type
+	public String lexeme; // Scope for characters
 	
-	// Program uses this constructor if the token is characters
-	public Token(Integer tag, String scope) {
+	// Program uses this constructor to save the token's tag and lexeme
+	public Token(Integer tag, String lexeme) {
 		this.tag = tag;
-		this.scope = new String(scope);
-	}
-	
-	// Program uses this constructor if the token is number
-	public Token(Integer tag, int number) {
-		this.tag = tag;
-		this.number = number;
+		this.lexeme = new String(lexeme);
 	}
 
 	public Integer getTag() {
 		return tag;
 	}
 
-	public String getScope() {
-		return scope;
+	public String getLexeme() {
+		return lexeme;
 	}
 }
