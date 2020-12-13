@@ -70,7 +70,7 @@ public class ReservedKeywords {
 	
 	public boolean isKeyword(String scope) {
 		while (reservedTokens.get(index) != null) {
-			if (scope == reservedTokens.get(index).getScope()) {
+			if (scope == reservedTokens.get(index).getLexeme()) {
 				return true;
 			}
 		}
