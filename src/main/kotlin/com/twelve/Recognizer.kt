@@ -25,6 +25,9 @@ class Recognizer constructor(private val reader: Reader) {
                 state = 0
                 continue
             }
+            if (saveSingleLetterTokens(ch) > -1) {
+                continue
+            }
 
             sb += ch
 
@@ -364,10 +367,81 @@ class Recognizer constructor(private val reader: Reader) {
         return -1
     }
 
-    private fun checkToken(state: Int, vaule: String) {
+    private fun saveSingleLetterTokens(ch: Char): Int {
+        val table = SymbolTable.getInstance()
+        val type = when (ch) {
+            '(' -> {
+                Tag.OPEN_PARANTHESES
+            }
+            ')' -> {
+                Tag.CLOSE_PARANTHESES
+            }
+            '^' -> {
+                Tag.TERMINATOR
+            }
+            '{' -> {
+                Tag.OPEN_CURLY_BRACES
+            }
+            '}' -> {
+                Tag.CLOSE_CURLY_BRACES
+            }
+            '[' -> {
+                Tag.OPEN_BRACES
+            }
+            ']' -> {
+                Tag.CLOSE_BRACES
+            }
+            ',' -> {
+                Tag.COMA
+            }
+            else -> {
+                -1
+            }
+        }
+        if (type > -1) {
+            table.addSymbol(Token(type, ch.toString()))
+        }
+        return type
+    }
+
+    private fun checkToken(state: Int, value: String) {
         //TODO: finish this function. recognize the tokens based on the value of state and insert the value in the symbol table
 
         val table = SymbolTable.getInstance()
-//        table.addSymbol()
+        val type = when (state) {
+            22 -> Tag.STRING
+            20 -> Tag.INT
+            2 -> Tag.BIG
+            3 -> Tag.BIG_EQUAL
+            4 -> Tag.SMALL
+            5 -> Tag.SMALL_EQUAL
+            7 -> Tag.EQUAL
+            13 -> Tag.FLOAT
+            26 -> Tag.CHAR
+            30 -> Tag.IF
+            32 -> Tag.WHILE
+            39 -> Tag.PRINT
+            42 -> Tag.SCAN
+            50 -> Tag.REMAIN
+            60 -> Tag.MUL
+            53 -> Tag.ADD
+            56 -> Tag.SUB
+            66 -> Tag.DIV
+            67, 69 -> Tag.NUM
+            78 -> Tag.INC
+            82 -> Tag.DEC
+            else -> {
+                if (state in 8..12 || state == 14 || state in 23..25 || state in 16..19 || state in 27..29 ||
+                        state == 31 || state in 33..38 || state in 40..41 || state in 43..49 || state in 70..77 ||
+                        state in 79..81 || state in 51..52 || state in 54..55 || state in 57..59 || state in 61..65) {
+                    Tag.ID
+                } else {
+                    -1
+                }
+            }
+        }
+
+        if (type != -1) table.addSymbol(Token(type, value))
+
     }
 }
