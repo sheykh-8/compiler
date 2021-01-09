@@ -6,10 +6,13 @@ public class SymbolTable {
 
 	private static SymbolTable INSTANCE;
 
-	private ArrayList<Token> table; // TODO: consider changing the structure of table
+	private final ArrayList<Token> table; // TODO: consider changing the structure of table
 
-	public SymbolTable() {
-		this.table = new ArrayList<Token>();
+	private int inputIndex;
+
+	private SymbolTable() {
+		this.table = new ArrayList<>();
+		inputIndex = 0;
 	}
 
 	public static SymbolTable getInstance() {
@@ -21,11 +24,35 @@ public class SymbolTable {
 	}
 
 	public void addSymbol(Token token) {
+//		System.out.println(token);
+		table.removeIf(t -> t.lexeme.equals("$"));
 		this.table.add(token);
+		table.add(new Token(Tag.END, "$"));
 	}
 
-	public Token lookup(Integer tag) {
-		return this.table.get(tag);
+
+	/**
+	 * this method is supposed to return the token that inputIndex is pointing at. for parsing purposes
+	 * @return Token
+	 */
+	public Token getCurrentToken () {
+		return this.table.get(inputIndex);
+	}
+
+	/**
+	 * proceed the inputIndex to point at the next Token
+	 * @return latest index
+	 */
+	public int proceed () {
+		return ++inputIndex;
+	}
+
+	public int getTableSize () {
+		return this.table.size();
+	}
+
+	public void print() {
+		table.forEach(System.out::println);
 	}
 
 }

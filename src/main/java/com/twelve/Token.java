@@ -7,7 +7,7 @@ public class Token {
 	// Program uses this constructor to save the token's tag and lexeme
 	public Token(Integer tag, String lexeme) {
 		this.tag = tag;
-		this.lexeme = new String(lexeme);
+		this.lexeme = lexeme;
 	}
 
 	public Integer getTag() {
@@ -16,5 +16,10 @@ public class Token {
 
 	public String getLexeme() {
 		return lexeme;
+	}
+
+	@Override
+	public String toString() {
+		return this.tag + " " + this.lexeme;
 	}
 }

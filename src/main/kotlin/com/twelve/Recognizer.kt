@@ -1,6 +1,5 @@
 package com.twelve
 
-import java.io.BufferedReader
 import java.io.Reader
 
 class Recognizer constructor(private val reader: Reader) {
@@ -17,7 +16,7 @@ class Recognizer constructor(private val reader: Reader) {
 
         while (i != -1) {
             val ch = i.toChar()
-
+            i = reader.read()
             if (ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
                 checkToken(state, sb)
@@ -25,14 +24,19 @@ class Recognizer constructor(private val reader: Reader) {
                 state = 0
                 continue
             }
-            if (saveSingleLetterTokens(ch) > -1) {
+            val type = checkSingleLetterTokens(ch)
+            if ( type > -1) {
+                checkToken(state, sb)
+                saveToken(type, ch.toString())
+                sb = ""
+                state = 0
                 continue
             }
 
             sb += ch
 
 
-            i = reader.read()
+
             when (state) {
                 0 -> {
                     when {
@@ -367,9 +371,8 @@ class Recognizer constructor(private val reader: Reader) {
         return -1
     }
 
-    private fun saveSingleLetterTokens(ch: Char): Int {
-        val table = SymbolTable.getInstance()
-        val type = when (ch) {
+    private fun checkSingleLetterTokens(ch: Char): Int {
+        return when (ch) {
             '(' -> {
                 Tag.OPEN_PARANTHESES
             }
@@ -394,20 +397,20 @@ class Recognizer constructor(private val reader: Reader) {
             ',' -> {
                 Tag.COMA
             }
+            '=' -> Tag.ASSIGN
             else -> {
                 -1
             }
         }
-        if (type > -1) {
-            table.addSymbol(Token(type, ch.toString()))
-        }
-        return type
     }
 
-    private fun checkToken(state: Int, value: String) {
-        //TODO: finish this function. recognize the tokens based on the value of state and insert the value in the symbol table
-
+    private fun saveToken (type: Int, lexeme: String) {
         val table = SymbolTable.getInstance()
+        table.addSymbol(Token(type, lexeme))
+    }
+
+
+    private fun checkToken(state: Int, value: String) {
         val type = when (state) {
             22 -> Tag.STRING
             20 -> Tag.INT
@@ -441,7 +444,7 @@ class Recognizer constructor(private val reader: Reader) {
             }
         }
 
-        if (type != -1) table.addSymbol(Token(type, value))
+        if (type != -1) saveToken(type, value)
 
     }
 }
