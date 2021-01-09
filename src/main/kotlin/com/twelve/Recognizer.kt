@@ -59,7 +59,7 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 27
                         }
                         ch == 't' -> {
-                            state = 37
+                            state = 31
                         }
                         ch == 'B' -> {
                             state = 33
@@ -150,16 +150,16 @@ class Recognizer constructor(private val reader: Reader) {
                     }
                 }
                 16 -> {
-                    state = reservedOrId(ch, 'a', 16)
+                    state = reservedOrId(ch, 'a', 17)
                 }
                 17 -> {
-                    state = reservedOrId(ch, 'h', 17)
+                    state = reservedOrId(ch, 'h', 18)
                 }
                 18 -> {
-                    state = reservedOrId(ch, 'i', 18)
+                    state = reservedOrId(ch, 'i', 19)
                 }
                 19 -> {
-                    state = reservedOrId(ch, 'h', 19)
+                    state = reservedOrId(ch, 'h', 20)
                 }
                 21 -> {
                     state = if (ch == '\"') {
@@ -342,7 +342,7 @@ class Recognizer constructor(private val reader: Reader) {
                     state = reservedOrId(ch, 'a', 76)
                 }
                 76 -> {
-                    state = reservedOrId(ch, 'e', 77)
+                    state = reservedOrId(ch, 'l', 77)
                 }
                 77 -> {
                     state = reservedOrId(ch, 'a', 78)
