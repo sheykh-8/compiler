@@ -1,10 +1,8 @@
 
-
-
 Benevis("salam", v1)^
 
 agar { 1 &B 2 } [
-	Benevis("na!")^
+	Benevis("na!", 12)^
 ]
 
 

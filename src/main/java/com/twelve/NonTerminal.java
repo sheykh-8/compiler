@@ -16,5 +16,6 @@ public class NonTerminal {
     TERM = 13,
     FACTOR = 14,
     E = 15,
-    T = 16;
+    T = 16,
+    S = 17;
 }

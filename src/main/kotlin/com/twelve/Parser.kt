@@ -9,7 +9,7 @@ class Parser {
 
     init {
         stack.push(Tag.END)
-        stack.push(NonTerminal.START)
+        stack.push(NonTerminal.S)
     }
 
     fun parse (): Boolean {
@@ -28,12 +28,14 @@ class Parser {
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 return true
             }
-            else if (isTerminal(stack.peek())) {
+            else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
                 if (stack.peek() == ctoken.tag) {
                     stack.pop()
+                    print(ctoken.lexeme + " ")
                     table.proceed()
                     ctoken = table.currentToken
                 } else {
+                    println()
                     println("37 ${ctoken.lexeme}")
                     return false
                 }
@@ -46,6 +48,7 @@ class Parser {
                  */
                 val tableCheck = predictTable.get(stack.peek(), ctoken.tag)
                 if (tableCheck.isEmpty()) {
+                    println()
                     println("49 ${ctoken.lexeme}")
                     return false
                 }

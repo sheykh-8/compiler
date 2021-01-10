@@ -5,27 +5,41 @@ class PredictTable {
 
     fun get (topStack: Int, input: Int): Array<Int> {
         /**
-         * options for when START is on top of stack
+         * when S is on top of stack
+         */
+        if (topStack == NonTerminal.S) {
+            when (input) {
+                Tag.PRINT, Tag.SCAN, Tag.IF, Tag.WHILE, Tag.ID, Tag.INT, Tag.FLOAT, Tag.CHAR -> {
+                    return arrayOf(NonTerminal.START)
+                }
+                Tag.END, Tag.CLOSE_BRACES -> {
+                    return arrayOf(Tag.LANDA)
+                }
+            }
+        }
+
+        /**
+         * when START is on top of stack
          */
         if (topStack == NonTerminal.START) {
             when (input) {
                 Tag.PRINT -> {
-                    return arrayOf(Tag.PRINT, Tag.OPEN_PARANTHESES, Tag.STRING, NonTerminal.SERIES_EXPRESSION, Tag.CLOSE_PARANTHESES, Tag.TERMINATOR)
+                    return arrayOf(Tag.PRINT, Tag.OPEN_PARANTHESES, Tag.STRING, NonTerminal.SERIES_EXPRESSION, Tag.CLOSE_PARANTHESES, Tag.TERMINATOR, NonTerminal.S)
                 }
                 Tag.SCAN -> {
-                    return arrayOf(Tag.SCAN, Tag.OPEN_PARANTHESES, Tag.STRING, NonTerminal.SERIES_ID, Tag.CLOSE_PARANTHESES, Tag.TERMINATOR)
+                    return arrayOf(Tag.SCAN, Tag.OPEN_PARANTHESES, Tag.STRING, NonTerminal.SERIES_ID, Tag.CLOSE_PARANTHESES, Tag.TERMINATOR, NonTerminal.S)
                 }
                 Tag.IF -> {
-                    return arrayOf(Tag.IF, Tag.OPEN_CURLY_BRACES, NonTerminal.BOOLEANEXPRESSION, Tag.CLOSE_CURLY_BRACES, Tag.OPEN_BRACES, NonTerminal.START, Tag.CLOSE_BRACES)
+                    return arrayOf(Tag.IF, Tag.OPEN_CURLY_BRACES, NonTerminal.BOOLEANEXPRESSION, Tag.CLOSE_CURLY_BRACES, Tag.OPEN_BRACES, NonTerminal.S, Tag.CLOSE_BRACES, NonTerminal.S)
                 }
                 Tag.WHILE -> {
-                    return arrayOf(Tag.WHILE, Tag.OPEN_CURLY_BRACES, NonTerminal.BOOLEANEXPRESSION, Tag.CLOSE_CURLY_BRACES, Tag.OPEN_BRACES, NonTerminal.START, Tag.CLOSE_BRACES)
+                    return arrayOf(Tag.WHILE, Tag.OPEN_CURLY_BRACES, NonTerminal.BOOLEANEXPRESSION, Tag.CLOSE_CURLY_BRACES, Tag.OPEN_BRACES, NonTerminal.S, Tag.CLOSE_BRACES, NonTerminal.S)
                 }
                 Tag.ID -> {
-                    return arrayOf(Tag.ID, NonTerminal.ID_OP)
+                    return arrayOf(Tag.ID, NonTerminal.ID_OP, NonTerminal.S)
                 }
                 Tag.INT, Tag.FLOAT, Tag.CHAR -> {
-                    return arrayOf(NonTerminal.TYPE, Tag.ID, Tag.ASSIGN, NonTerminal.EXPRESSION, Tag.TERMINATOR)
+                    return arrayOf(NonTerminal.TYPE, Tag.ID, Tag.ASSIGN, NonTerminal.EXPRESSION, Tag.TERMINATOR, NonTerminal.S)
                 }
             }
         }
@@ -182,7 +196,7 @@ class PredictTable {
         if (topStack == NonTerminal.FACTOR) {
             when (input) {
                 Tag.ID, Tag.NUM  -> {
-                    return arrayOf(Tag.ID)
+                    return arrayOf(input)
                 }
                 Tag.OPEN_PARANTHESES -> {
                     return arrayOf(Tag.OPEN_PARANTHESES, NonTerminal.EXPRESSION, Tag.CLOSE_PARANTHESES)

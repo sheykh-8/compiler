@@ -76,14 +76,14 @@ class Recognizer constructor(private val reader: Reader) {
                         ch == 'T' -> {
                             state = 67
                         }
+                        ch == 'Y' -> {
+                            state = 71
+                        }
                         ch.isDigit() -> {
                             state = 67
                         }
                         ch.isLetter() -> {
                             state = 70
-                        }
-                        ch == 'Y' -> {
-                            state = 71
                         }
                         else -> {
                             state = -1
