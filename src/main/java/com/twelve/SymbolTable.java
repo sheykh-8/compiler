@@ -30,6 +30,10 @@ public class SymbolTable {
 		table.add(new Token(Tag.END, "$"));
 	}
 
+	public ArrayList<Token> getList() {
+		return new ArrayList(this.table);
+	}
+
 
 	/**
 	 * this method is supposed to return the token that inputIndex is pointing at. for parsing purposes
