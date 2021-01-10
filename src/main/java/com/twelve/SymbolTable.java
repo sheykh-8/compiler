@@ -31,7 +31,7 @@ public class SymbolTable {
 	}
 
 	public ArrayList<Token> getList() {
-		return new ArrayList(this.table);
+		return this.table;
 	}
 
 
