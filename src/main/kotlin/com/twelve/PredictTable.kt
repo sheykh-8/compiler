@@ -65,6 +65,9 @@ class PredictTable {
                 Tag.COMA -> {
                     return arrayOf(Tag.COMA, NonTerminal.EXPRESSION, NonTerminal.SERIES_EXPRESSION_EPS)
                 }
+                Tag.CLOSE_PARANTHESES -> {
+                    return arrayOf(Tag.LANDA)
+                }
             }
         }
         /**
