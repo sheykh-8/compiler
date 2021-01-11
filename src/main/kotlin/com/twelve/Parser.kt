@@ -12,9 +12,8 @@ class Parser {
         stack.push(NonTerminal.S)
     }
 
-    fun parse (): Boolean {
+    fun parse(): Boolean {
         val table = SymbolTable.getInstance()
-
         var ctoken = table.currentToken
 
         while (true) {
@@ -27,8 +26,7 @@ class Parser {
              */
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 return true
-            }
-            else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
+            } else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
                 if (stack.peek() == ctoken.tag) {
                     stack.pop()
                     print(ctoken.lexeme + " ")
@@ -36,6 +34,7 @@ class Parser {
                     ctoken = table.currentToken
                 } else {
                     println()
+                    println("topStack = ${stack.peek()} ctoken.tag = ${ctoken.tag} ")
                     println("${ctoken.lineIndex} ${ctoken.lexeme}")
                     return false
                 }

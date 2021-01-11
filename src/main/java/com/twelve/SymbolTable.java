@@ -26,7 +26,7 @@ public class SymbolTable {
 	public void addSymbol(Token token) {
 		System.out.println(token);
 		table.removeIf(t -> t.lexeme.equals("$"));
-		this.table.add(token);
+		table.add(token);
 		table.add(new Token(Tag.END, "$", -1));
 	}
 

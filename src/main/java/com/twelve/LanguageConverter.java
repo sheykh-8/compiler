@@ -118,11 +118,11 @@ public class LanguageConverter {
 
                     break;
                 case Tag.OPEN_BRACES:
-                    input.append("{"); // {
+                    input.append("{\n"); // {
 
                     break;
                 case Tag.CLOSE_BRACES:
-                    input.append("}"); // }
+                    input.append("\n}"); // }
 
                     break;
                 case Tag.OPEN_CURLY_BRACES:

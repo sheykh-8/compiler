@@ -15,13 +15,24 @@ class Recognizer constructor(private val reader: Reader) {
         var state = 0
         var i = reader.read()
         var sb = ""
+        var stringState = false
 
         while (i != -1) {
             val ch = i.toChar()
             if (ch == '\n') lineIndex++
-
             i = reader.read()
-            if (ch.isWhitespace()) {
+
+            if (ch == '\"') {
+                if (stringState) {
+                    saveToken(Tag.STRING, sb + '\"')
+                    sb = ""
+                    state = 0
+                }
+                stringState = !stringState
+            }
+
+
+            if (!stringState && ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
                 checkToken(state, sb)
                 sb = ""
@@ -29,7 +40,7 @@ class Recognizer constructor(private val reader: Reader) {
                 continue
             }
             val type = checkSingleLetterTokens(ch)
-            if (type > -1) {
+            if (!stringState && type > -1) {
                 checkToken(state, sb)
                 saveToken(type, ch.toString())
                 sb = ""
