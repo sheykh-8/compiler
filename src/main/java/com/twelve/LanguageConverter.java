@@ -9,7 +9,7 @@ public class LanguageConverter {
             "#include <stdio.h>\n" +
                     "\n" +
                     "int main(){\n";
-    private static final String C_POSTFIX = "return 0;}";
+    private static final String C_POSTFIX = "getchar();\n return 0;\n}";
 
 
     public LanguageConverter(String path) throws IOException {
@@ -163,9 +163,8 @@ public class LanguageConverter {
 
     private void compileAndRun(String path) throws IOException {
         String osName = System.getProperty("os.name");
-
         if (osName.equals("Linux")) {
-            String[] args = new String[]{"/bin/bash", "-c", "cd " + path + " && /usr/bin/gcc tmp.c && ./a.out"};
+            String[] args = new String[]{"/bin/bash", "-c", "cd " + path + " && /usr/bin/gcc tmp.c && /usr/bin/xterm ./a.out"};
             Process p = new ProcessBuilder(args).start();
             try {
                 p.waitFor();
@@ -177,7 +176,6 @@ public class LanguageConverter {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-//            System.out.println(p.getInputStream().toString());
         } else {
             Runtime.getRuntime().exec("cmd /c start cmd.exe /K \" cd " + path + " & gcc tmp.c & a.exe\"");
         }
