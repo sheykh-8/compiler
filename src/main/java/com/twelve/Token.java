@@ -1,25 +1,27 @@
 package com.twelve;
 
 public class Token {
-	public int tag; // Works as the token type
-	public String lexeme; // Scope for characters
-	
-	// Program uses this constructor to save the token's tag and lexeme
-	public Token(int tag, String lexeme) {
-		this.tag = tag;
-		this.lexeme = lexeme;
-	}
+    public int tag; // Works as the token type
+    public String lexeme; // Scope for characters
+    public int lineIndex;
 
-	public int getTag() {
-		return tag;
-	}
+    // Program uses this constructor to save the token's tag and lexeme
+    public Token(int tag, String lexeme, int lineIndex) {
+        this.tag = tag;
+        this.lexeme = lexeme;
+        this.lineIndex = lineIndex;
+    }
 
-	public String getLexeme() {
-		return lexeme;
-	}
+    public int getTag() {
+        return tag;
+    }
 
-	@Override
-	public String toString() {
-		return this.tag + " " + this.lexeme;
-	}
+    public String getLexeme() {
+        return lexeme;
+    }
+
+    @Override
+    public String toString() {
+        return this.tag + " " + this.lexeme;
+    }
 }

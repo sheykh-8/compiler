@@ -8,6 +8,8 @@ class Recognizer constructor(private val reader: Reader) {
         extractTokens()
     }
 
+    var lineIndex = 1
+    // There's A problem in lineIndex , it's less than actual line index
 
     private fun extractTokens() {
         var state = 0
@@ -16,6 +18,8 @@ class Recognizer constructor(private val reader: Reader) {
 
         while (i != -1) {
             val ch = i.toChar()
+            if (ch == '\n') lineIndex++
+
             i = reader.read()
             if (ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
@@ -25,7 +29,7 @@ class Recognizer constructor(private val reader: Reader) {
                 continue
             }
             val type = checkSingleLetterTokens(ch)
-            if ( type > -1) {
+            if (type > -1) {
                 checkToken(state, sb)
                 saveToken(type, ch.toString())
                 sb = ""
@@ -404,9 +408,9 @@ class Recognizer constructor(private val reader: Reader) {
         }
     }
 
-    private fun saveToken (type: Int, lexeme: String) {
+    private fun saveToken(type: Int, lexeme: String) {
         val table = SymbolTable.getInstance()
-        table.addSymbol(Token(type, lexeme))
+        table.addSymbol(Token(type, lexeme, lineIndex))
     }
 
 
@@ -435,8 +439,9 @@ class Recognizer constructor(private val reader: Reader) {
             82 -> Tag.DEC
             else -> {
                 if (state in 8..12 || state == 14 || state in 23..25 || state in 16..19 || state in 27..29 ||
-                        state == 31 || state in 33..38 || state in 40..41 || state in 43..49 || state in 70..77 ||
-                        state in 79..81 || state in 51..52 || state in 54..55 || state in 57..59 || state in 61..65) {
+                    state == 31 || state in 33..38 || state in 40..41 || state in 43..49 || state in 70..77 ||
+                    state in 79..81 || state in 51..52 || state in 54..55 || state in 57..59 || state in 61..65
+                ) {
                     Tag.ID
                 } else {
                     -1

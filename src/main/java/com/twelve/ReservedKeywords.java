@@ -3,43 +3,43 @@ package com.twelve;
 import java.util.ArrayList;
 
 public class ReservedKeywords {
-//	private Hashtable<Integer, Token> reservedTokens;
-	private ArrayList<Token> reservedTokens;
-	private int index = 0;
+    //	private Hashtable<Integer, Token> reservedTokens;
+    private ArrayList<Token> reservedTokens;
+    private int index = 0;
 
-	public ReservedKeywords() {
-		reservedTokens = new ArrayList<Token>();
-
-		reserve(new Token(Tag.TRUE, "true"));
-		reserve(new Token(Tag.FALSE, "false"));
-		reserve(new Token(Tag.IF, "agar"));
-		reserve(new Token(Tag.ELSE, "else"));
-		reserve(new Token(Tag.WHILE, "ta"));
-		reserve(new Token(Tag.BIG, "&B"));
-		reserve(new Token(Tag.SMALL, "&K"));
-		reserve(new Token(Tag.EQUAL, "&MM"));
-		reserve(new Token(Tag.ASSIGN, "="));
-		reserve(new Token(Tag.BIG_EQUAL, "&BM"));
-		reserve(new Token(Tag.SMALL_EQUAL, "&KM"));
-		reserve(new Token(Tag.INT, "Sahih"));
-		reserve(new Token(Tag.FLOAT, "Ashari"));
-		reserve(new Token(Tag.CHAR, "Harf"));
-		reserve(new Token(Tag.ADD, "Jam"));
-		reserve(new Token(Tag.INC, "YekiBala"));
-		reserve(new Token(Tag.SUB, "Kam"));
-		reserve(new Token(Tag.DEC, "YekiPain"));
-		reserve(new Token(Tag.MUL, "Zarb"));
-		reserve(new Token(Tag.DIV, "Tagsim"));
-		reserve(new Token(Tag.REMAIN, "BagiMonde"));
-		reserve(new Token(Tag.OPEN_PARANTHESES, "("));
-		reserve(new Token(Tag.CLOSE_PARANTHESES, ")"));
-		reserve(new Token(Tag.OPEN_BRACES, "["));
-		reserve(new Token(Tag.CLOSE_BRACES, "]"));
-		reserve(new Token(Tag.TERMINATOR, "^"));
-		reserve(new Token(Tag.QUOTATIONS, "\""));
-		reserve(new Token(Tag.COMA, ","));
-		reserve(new Token(Tag.SCAN, "Begir"));
-		reserve(new Token(Tag.PRINT, "Benevis"));
+    public ReservedKeywords() {
+        reservedTokens = new ArrayList<Token>();
+        int lineIndex = -1;
+        reserve(new Token(Tag.TRUE, "true", lineIndex));
+        reserve(new Token(Tag.FALSE, "false", lineIndex));
+        reserve(new Token(Tag.IF, "agar", lineIndex));
+        reserve(new Token(Tag.ELSE, "else", lineIndex));
+        reserve(new Token(Tag.WHILE, "ta", lineIndex));
+        reserve(new Token(Tag.BIG, "&B", lineIndex));
+        reserve(new Token(Tag.SMALL, "&K", lineIndex));
+        reserve(new Token(Tag.EQUAL, "&MM", lineIndex));
+        reserve(new Token(Tag.ASSIGN, "=", lineIndex));
+        reserve(new Token(Tag.BIG_EQUAL, "&BM", lineIndex));
+        reserve(new Token(Tag.SMALL_EQUAL, "&KM", lineIndex));
+        reserve(new Token(Tag.INT, "Sahih", lineIndex));
+        reserve(new Token(Tag.FLOAT, "Ashari", lineIndex));
+        reserve(new Token(Tag.CHAR, "Harf", lineIndex));
+        reserve(new Token(Tag.ADD, "Jam", lineIndex));
+        reserve(new Token(Tag.INC, "YekiBala", lineIndex));
+        reserve(new Token(Tag.SUB, "Kam", lineIndex));
+        reserve(new Token(Tag.DEC, "YekiPain", lineIndex));
+        reserve(new Token(Tag.MUL, "Zarb", lineIndex));
+        reserve(new Token(Tag.DIV, "Tagsim", lineIndex));
+        reserve(new Token(Tag.REMAIN, "BagiMonde", lineIndex));
+        reserve(new Token(Tag.OPEN_PARANTHESES, "(", lineIndex));
+        reserve(new Token(Tag.CLOSE_PARANTHESES, ")", lineIndex));
+        reserve(new Token(Tag.OPEN_BRACES, "[", lineIndex));
+        reserve(new Token(Tag.CLOSE_BRACES, "]", lineIndex));
+        reserve(new Token(Tag.TERMINATOR, "^", lineIndex));
+        reserve(new Token(Tag.QUOTATIONS, "\"", lineIndex));
+        reserve(new Token(Tag.COMA, ",", lineIndex));
+        reserve(new Token(Tag.SCAN, "Begir", lineIndex));
+        reserve(new Token(Tag.PRINT, "Benevis", lineIndex));
 
 //    	reserve(Tag.TRUE, new Token(Tag.TRUE, "true"));
 //    	reserve(Tag.FALSE, new Token(Tag.FALSE, "false"));
@@ -62,18 +62,18 @@ public class ReservedKeywords {
 //    	reserve(Tag.MUL, new Token(Tag.MUL, "Zarb"));
 //    	reserve(Tag.DIV, new Token(Tag.DIV, "Tagsim"));
 //    	reserve(Tag.REMAIN, new Token(Tag.REMAIN, "BagiMonde"));
-	}
+    }
 
-	public void reserve(Token t) {
-		reservedTokens.add(t);
-	}
-	
-	public boolean isKeyword(String scope) {
-		while (reservedTokens.get(index) != null) {
-			if (scope == reservedTokens.get(index).getLexeme()) {
-				return true;
-			}
-		}
-		return false;
-	}
+    public void reserve(Token t) {
+        reservedTokens.add(t);
+    }
+
+    public boolean isKeyword(String scope) {
+        while (reservedTokens.get(index) != null) {
+            if (scope.equals(reservedTokens.get(index).getLexeme())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

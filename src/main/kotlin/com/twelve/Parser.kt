@@ -36,7 +36,7 @@ class Parser {
                     ctoken = table.currentToken
                 } else {
                     println()
-                    println("37 ${ctoken.lexeme}")
+                    println("${ctoken.lineIndex} ${ctoken.lexeme}")
                     return false
                 }
             } else {
