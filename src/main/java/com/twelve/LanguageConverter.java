@@ -1,8 +1,6 @@
 package com.twelve;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 public class LanguageConverter {
@@ -150,7 +148,12 @@ public class LanguageConverter {
         }
         input.append(C_POSTFIX);
 
-        FileWriter fileWriter = new FileWriter(path + "/tmp.c");
+        File f = new File(path + File.separator + "tmp.c");
+        if (!f.exists()) {
+            boolean res = f.createNewFile();
+            System.out.println("file created: " + res);
+        }
+        FileWriter fileWriter = new FileWriter(f);
         fileWriter.write(input.toString());
         fileWriter.flush();
         fileWriter.close();
@@ -159,6 +162,24 @@ public class LanguageConverter {
     }
 
     private void compileAndRun(String path) throws IOException {
-        Runtime.getRuntime().exec("cmd /c start cmd.exe /K \" cd " + path + " & gcc tmp.c & a.exe\"");
+        String osName = System.getProperty("os.name");
+
+        if (osName.equals("Linux")) {
+            String[] args = new String[]{"/bin/bash", "-c", "cd " + path + " && /usr/bin/gcc tmp.c && ./a.out"};
+            Process p = new ProcessBuilder(args).start();
+            try {
+                p.waitFor();
+                String line = " ";
+                BufferedReader br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+                while ((line = br.readLine()) != null) {
+                    System.out.println(line);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            System.out.println(p.getInputStream().toString());
+        } else {
+            Runtime.getRuntime().exec("cmd /c start cmd.exe /K \" cd " + path + " & gcc tmp.c & a.exe\"");
+        }
     }
 }

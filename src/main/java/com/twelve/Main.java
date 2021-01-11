@@ -6,7 +6,7 @@ import java.io.InputStreamReader;
 
 public class Main {
 
-    private static final String PATH = System.getProperty("java.io.tmpdir") + "SinaSharp";
+    private static final String PATH = System.getProperty("java.io.tmpdir") + File.separator + "SinaSharp";
 
     public static void main(String[] args) {
         //Give a file name as command-line argument to compiler to run the scanner.
