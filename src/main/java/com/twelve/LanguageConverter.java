@@ -6,17 +6,17 @@ public class LanguageConverter {
 	SymbolTable t;
 	ArrayList<Token> table;
 	StringBuilder input;
-	
+
 	public LanguageConverter() {
 		String strTmp = System.getProperty("java.io.tmpdir");
 		t = SymbolTable.getInstance();
 		table = t.getList();
 		input = new StringBuilder();
 		int index = 0;
-		
+
 		while (index < t.getTableSize()) {
 			switch (table.get(index).tag) {
-			
+
 			case Tag.INT:
 				input.append(" int"); // int
 				index++;
@@ -45,19 +45,28 @@ public class LanguageConverter {
 				input.append(" while"); // while
 				index++;
 				break;
-/*
- * the case block below needs some changes in order to recognize type specifiers and add &(address-of) operator after coma
- */
 			case Tag.STRING:
-				input.append(table.get(index).getLexeme()); // string
+				if (table.get(index - 2).getTag() == Tag.SCAN && table.get(index - 1).getTag() == Tag.OPEN_PARANTHESES
+						&& table.get(index + 1).getTag() == Tag.COMA) {
+					if (table.get(index).getLexeme().replaceAll("\\s+", "") == "%d"
+							|| table.get(index).getLexeme().replaceAll("\\s+", "") == "%c"
+							|| table.get(index).getLexeme().replaceAll("\\s+", "") == "%f") {
+						input.append(" " + table.get(index).getLexeme());
+						input.append(" ,&");
+						index += 2;
+						break;
+					}
+				}
+
+				input.append(" " + table.get(index).getLexeme()); // string
 				index++;
 				break;
 			case Tag.ID:
-				input.append(table.get(index).getLexeme()); // id
+				input.append(" " + table.get(index).getLexeme()); // id
 				index++;
 				break;
 			case Tag.NUM:
-				input.append(table.get(index).getLexeme()); // num
+				input.append(" " + table.get(index).getLexeme()); // num
 				index++;
 				break;
 			case Tag.COMA:
