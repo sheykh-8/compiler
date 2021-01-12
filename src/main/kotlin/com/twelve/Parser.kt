@@ -1,11 +1,16 @@
 package com.twelve
 
 import java.util.*
+import kotlin.collections.ArrayList
 
 class Parser {
 
     private val stack: Stack<Int> = Stack()
     private val predictTable: PredictTable = PredictTable()
+
+    private val variablesType = TreeMap<String, Int>()
+    private val types = arrayOf(Tag.INT, Tag.FLOAT, Tag.CHAR)
+    private val errors = ArrayList<String>()
 
     init {
         stack.push(Tag.END)
@@ -15,6 +20,7 @@ class Parser {
     fun parse(): Boolean {
         val table = SymbolTable.getInstance()
         var ctoken = table.currentToken
+        var lastVariableType = 0
 
         while (true) {
             /**
@@ -27,15 +33,44 @@ class Parser {
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 return true
             } else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
+
+                //println(" ${stack.peek()}  ${ctoken.lexeme}")
+
+
                 if (stack.peek() == ctoken.tag) {
+
+                    if (types.contains(ctoken.tag))// compiler is defining a variable
+                        lastVariableType = ctoken.tag
+
+                    /** checking duplicated variable or undefined **/
+                    if (ctoken.tag == Tag.ID) {
+                        if (lastVariableType == 0) {
+                            if (!variablesType.containsKey(ctoken.lexeme))
+                                errors.add("Undefined variable in line ${ctoken.lineIndex}")
+                        } else {
+                            if (!variablesType.containsKey(ctoken.lexeme))
+                                variablesType[ctoken.lexeme] = lastVariableType
+                            else
+                                errors.add("Duplicate variable in line ${ctoken.lineIndex}")
+                            lastVariableType = 0
+                        }
+                    }
+                    //print errors
+                    if (errors.isNotEmpty()) {
+                        println(errors[0])
+                        errors.removeAt(0)
+                    }
+
+
                     stack.pop()
-                    print(ctoken.lexeme + " ")
                     table.proceed()
                     ctoken = table.currentToken
+
                 } else {
                     println()
                     println("topStack = ${stack.peek()} ctoken.tag = ${ctoken.tag} ")
                     println("${ctoken.lineIndex} ${ctoken.lexeme}")
+                    errors.add("looking for ${stack.peek()} , fount ${ctoken.lexeme}")
                     return false
                 }
             } else {
@@ -60,6 +95,7 @@ class Parser {
                 }
             }
         }
+
     }
 
     private fun isTerminal(tag: Int): Boolean {
