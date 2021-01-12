@@ -50,6 +50,7 @@ public class LanguageConverter {
 
                 case Tag.STRING:
                 case Tag.NUM:
+                case Tag.CHARACTER:
                     input.append(" ").append(table.get(index).getLexeme()).append(" ");
                     break;
                 case Tag.ID:
