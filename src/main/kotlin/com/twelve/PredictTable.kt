@@ -38,8 +38,11 @@ class PredictTable {
                 Tag.ID -> {
                     return arrayOf(Tag.ID, NonTerminal.ID_OP, NonTerminal.S)
                 }
-                Tag.INT, Tag.FLOAT, Tag.CHAR -> {
+                Tag.INT, Tag.FLOAT -> {
                     return arrayOf(NonTerminal.TYPE, Tag.ID, Tag.ASSIGN, NonTerminal.EXPRESSION, Tag.TERMINATOR, NonTerminal.S)
+                }
+                Tag.CHAR -> {
+                    return arrayOf(Tag.CHAR, Tag.ID, Tag.ASSIGN, Tag.CHARACTER, Tag.TERMINATOR, NonTerminal.S)
                 }
             }
         }
@@ -131,7 +134,7 @@ class PredictTable {
          */
         if (topStack == NonTerminal.TYPE) {
             when (input) {
-                Tag.INT, Tag.FLOAT, Tag.CHAR -> {
+                Tag.INT, Tag.FLOAT -> {
                     return arrayOf(input)
                 }
             }
@@ -154,7 +157,7 @@ class PredictTable {
          */
         if (topStack == NonTerminal.IDENTIFIER) {
             when (input) {
-                Tag.ID, Tag.NUM -> {
+                Tag.ID, Tag.NUM, Tag.CHAR -> {
                     return arrayOf(input)
                 }
             }

@@ -48,7 +48,8 @@ class Parser {
                 val tableCheck = predictTable.get(stack.peek(), ctoken.tag)
                 if (tableCheck.isEmpty()) {
                     println()
-                    println("49 ${ctoken.lexeme}")
+                    println("production was empty:")
+                    println("${stack.peek()} ${ctoken.lexeme}")
                     return false
                 }
                 stack.pop()
@@ -62,6 +63,6 @@ class Parser {
     }
 
     private fun isTerminal(tag: Int): Boolean {
-        return tag in 1000..1035
+        return tag in 1000..1035 || tag == Tag.CHARACTER
     }
 }
