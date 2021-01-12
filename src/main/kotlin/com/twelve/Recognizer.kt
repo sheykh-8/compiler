@@ -16,23 +16,15 @@ class Recognizer constructor(private val reader: Reader) {
         var i = reader.read()
         var sb = ""
         var stringState = false
+        var charState = false
 
         while (i != -1) {
             val ch = i.toChar()
             if (ch == '\n') lineIndex++
             i = reader.read()
 
-            if (ch == '\"') {
-                if (stringState) {
-                    saveToken(Tag.STRING, sb + '\"')
-                    sb = ""
-                    state = 0
-                }
-                stringState = !stringState
-            }
 
-
-            if (!stringState && ch.isWhitespace()) {
+            if (!charState && !stringState && ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
                 checkToken(state, sb)
                 sb = ""
@@ -40,7 +32,7 @@ class Recognizer constructor(private val reader: Reader) {
                 continue
             }
             val type = checkSingleLetterTokens(ch)
-            if (!stringState && type > -1) {
+            if (!charState && !stringState && type > -1) {
                 checkToken(state, sb)
                 saveToken(type, ch.toString())
                 sb = ""
@@ -69,6 +61,11 @@ class Recognizer constructor(private val reader: Reader) {
                         }
                         ch == '\"' -> {
                             state = 21
+                            stringState = true
+                        }
+                        ch == '\'' -> {
+                            state = 100
+                            charState = true
                         }
                         ch == 'a' -> {
                             state = 27
@@ -177,11 +174,15 @@ class Recognizer constructor(private val reader: Reader) {
                     state = reservedOrId(ch, 'h', 20)
                 }
                 21 -> {
-                    state = if (ch == '\"') {
-                        22
+                    if (ch == '\"') {
+                        saveToken(Tag.STRING, sb)
+                        sb = ""
+                        state = 0
+                        stringState = false
                     } else {
-                        21
+                        state = 21
                     }
+
                 }
                 23 -> {
                     state = reservedOrId(ch, 'a', 24)
@@ -371,6 +372,23 @@ class Recognizer constructor(private val reader: Reader) {
                 81 -> {
                     state = reservedOrId(ch, 'n', 82)
                 }
+                100 -> {
+                    state = when (ch) {
+                        '\'' -> -1// empty character ( error massage: character can't be empty)
+                        else -> 101
+                    }
+                }
+                101 -> {
+                    if (ch == '\'') {
+                        saveToken(Tag.CHARACTER, sb)
+                        sb = ""
+                        state = 0
+                        charState = false
+                    } else {
+                        state = -1 // invalid character ( error massage: missing \')
+                    }
+                }
+
 
             }
 
