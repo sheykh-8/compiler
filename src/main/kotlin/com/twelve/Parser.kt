@@ -64,11 +64,8 @@ class Parser {
                     ctoken = table.currentToken
 
                 } else {
-                    println()
-                    println("topStack = ${stack.peek()} ctoken.tag = ${ctoken.tag} ")
-                    println("${ctoken.lineIndex} ${ctoken.lexeme}")
-                    errors.add("looking for ${stack.peek()} , fount ${ctoken.lexeme}")
-                    return false
+                    stack.pop()
+                    errors.add("Error : Missing ${intToTerminal(stack.peek())} in line ${ctoken.lineIndex}")
                 }
             } else {
                 /**
@@ -112,7 +109,14 @@ class Parser {
 
     }
 
-    private fun isTerminal(tag: Int): Boolean {
-        return tag in 1000..1035 || tag == Tag.CHARACTER
+
+
+    companion object {
+        fun isTerminal(tag: Int): Boolean {
+            return tag in 1000..1035 || tag == Tag.CHARACTER
+        }
+
     }
+
+
 }

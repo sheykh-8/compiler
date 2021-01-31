@@ -7,6 +7,7 @@ class PredictTable {
     }
 
     fun get(topStack: Int, input: Int): Array<Int> {
+
         /**
          * when S is on top of stack
          */
