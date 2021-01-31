@@ -233,7 +233,8 @@ class PredictTable {
                 }
                 //sync
                 Tag.MUL, Tag.DIV, Tag.REMAIN, Tag.ADD, Tag.SUB, Tag.CLOSE_PARANTHESES, Tag.BIG, Tag.BIG_EQUAL,
-                Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL, Tag.COMA, Tag.TERMINATOR, Tag.CLOSE_CURLY_BRACES, Tag.WHILE, Tag.IF, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL, Tag.COMA, Tag.TERMINATOR, Tag.CLOSE_CURLY_BRACES,
+                Tag.WHILE, Tag.IF, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -318,7 +319,9 @@ class PredictTable {
                 Tag.ADD, Tag.SUB -> {
                     return arrayOf(input, NonTerminal.TERM, NonTerminal.E)
                 }
-
+                Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                    return arrayOf(SYNCH)
+                }
             }
         }
 
