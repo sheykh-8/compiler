@@ -93,7 +93,7 @@ class PredictTable {
                     return arrayOf(Tag.CHAR, Tag.ID, Tag.ASSIGN, Tag.CHARACTER, Tag.TERMINATOR, NonTerminal.S)
                 }
                 //sync
-                Tag.END, Tag.CLOSE_BRACES, Tag.TERMINATOR-> {
+                Tag.END, Tag.CLOSE_BRACES, Tag.TERMINATOR -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -153,7 +153,7 @@ class PredictTable {
                     return arrayOf(Tag.COMA, Tag.ID, NonTerminal.SERIES_EXPRESSION_EPS)
                 }
                 //sync
-                Tag.CLOSE_PARANTHESES, Tag.TERMINATOR,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.CLOSE_PARANTHESES, Tag.TERMINATOR, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -171,7 +171,7 @@ class PredictTable {
                     return arrayOf(Tag.LANDA)
                 }
                 //synch
-                Tag.TERMINATOR,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.TERMINATOR, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -186,7 +186,7 @@ class PredictTable {
                     return arrayOf(input)
                 }
                 //sync
-                Tag.TERMINATOR ,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN-> {
+                Tag.TERMINATOR, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -201,7 +201,7 @@ class PredictTable {
                     return arrayOf(input)
                 }
                 //sync
-                Tag.ID, Tag.TERMINATOR,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.PRINT, Tag.SCAN -> {
+                Tag.ID, Tag.TERMINATOR, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -217,7 +217,7 @@ class PredictTable {
                     return arrayOf(NonTerminal.EXPRESSION, NonTerminal.OPB, NonTerminal.EXPRESSION)
                 }
                 //sync
-                Tag.CLOSE_CURLY_BRACES, Tag.TERMINATOR,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.CLOSE_CURLY_BRACES, Tag.TERMINATOR, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -233,7 +233,7 @@ class PredictTable {
                 }
                 //sync
                 Tag.MUL, Tag.DIV, Tag.REMAIN, Tag.ADD, Tag.SUB, Tag.CLOSE_PARANTHESES, Tag.BIG, Tag.BIG_EQUAL,
-                Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL, Tag.COMA, Tag.TERMINATOR, Tag.CLOSE_CURLY_BRACES,Tag.WHILE, Tag.IF,Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL, Tag.COMA, Tag.TERMINATOR, Tag.CLOSE_CURLY_BRACES, Tag.WHILE, Tag.IF, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -248,7 +248,7 @@ class PredictTable {
                     return arrayOf(input)
                 }
                 //synch
-                Tag.TERMINATOR,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.TERMINATOR, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -264,7 +264,7 @@ class PredictTable {
                 }
                 //sync
                 Tag.CLOSE_PARANTHESES, Tag.BIG, Tag.BIG_EQUAL, Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL,
-                Tag.COMA, Tag.TERMINATOR, Tag.CLOSE_CURLY_BRACES,Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.COMA, Tag.TERMINATOR, Tag.CLOSE_CURLY_BRACES, Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -299,7 +299,7 @@ class PredictTable {
                 }
                 //sync
                 Tag.MUL, Tag.DIV, Tag.REMAIN, Tag.ADD, Tag.SUB, Tag.CLOSE_PARANTHESES,
-                Tag.BIG, Tag.BIG_EQUAL, Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL, Tag.TERMINATOR,Tag.WHILE,
+                Tag.BIG, Tag.BIG_EQUAL, Tag.SMALL, Tag.SMALL_EQUAL, Tag.EQUAL, Tag.TERMINATOR, Tag.WHILE,
                 Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
@@ -333,6 +333,9 @@ class PredictTable {
                 }
                 Tag.MUL, Tag.DIV, Tag.REMAIN -> {
                     return arrayOf(input, NonTerminal.FACTOR, NonTerminal.T)
+                }
+                Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                    return arrayOf(SYNCH)
                 }
 
             }
