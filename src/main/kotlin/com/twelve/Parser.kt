@@ -32,6 +32,7 @@ class Parser {
              * pop the stack, check the predict table & if there is a rule push the items to the stack and in case of no rules it's a syntax error.
              */
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
+                errors.forEach(::println)
                 return true
             } else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
 
@@ -84,10 +85,11 @@ class Parser {
                     println("${stack.peek()} ${ctoken.lexeme}")
                     return false
                 }
-                if ( tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
+                if (tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
                     var e: String
                     if (isFirstNonTerminal && stack.peek() == NonTerminal.S) {
                         isFirstNonTerminal = false
+
                         e = "Error : Invalid Token in line ${ctoken.lineIndex}"
                         table.proceed()
                         ctoken = table.currentToken
