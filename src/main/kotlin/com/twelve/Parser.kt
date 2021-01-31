@@ -88,6 +88,7 @@ class Parser {
                     var e: String
                     if (isFirstNonTerminal && stack.peek() == NonTerminal.S) {
                         isFirstNonTerminal = false
+
                         e = "Error : Invalid Token in line ${ctoken.lineIndex}"
                         table.proceed()
                         ctoken = table.currentToken
