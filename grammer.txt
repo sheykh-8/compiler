@@ -1,0 +1,142 @@
+
+
+
+Benevis("salam")^
+
+agar { 1 &B 2 } [
+	Benevis("na!")^
+]
+
+
+Sahih v1 = 0^
+Sahih v2 = 14^
+
+ta { v1 &K 10 } [
+	Benevis("%d", v1)^
+	v1 YekiBala^
+]
+
+
+------------------------
+
+
+Grammar:
+
+S:
+	START
+	λ
+
+START:
+	Benevis ( STRING SERIES_EXPRESSION ) ^ S
+	Begir ( STRING SERIES_id ) ^ S
+	agar { BOOLEANEXPRESSION } [ START ] S
+	ta { BOOLEANEXPRESSION } [ START ] S
+	TYPE id = EXPRESSION ^ S
+	Harf id = char ^ S
+	id ID_OP S
+
+ID_OP:
+	= EXPRESSION ^
+	SINGULAROP ^
+
+
+SERIES_EXPRESSION:
+	, EXPRESSION SERIES_EXPRESSION'
+
+SERIES_EXPRESSION':
+	SERIES_EXPRESSION
+	λ
+
+SERIES_id:
+	,id SERIES_id'
+
+SERIES_id':
+	SERIES_id
+	λ
+
+SINGULAROP:
+	YekiBala
+	YekiPain
+
+TYPE:
+	Sahih
+	Ashari
+
+BOOLEANEXPRESSION:
+	EXPRESSION OPB EXPRESSION
+
+IDENTIFIER:
+	id
+	num
+	char
+
+OPB:
+	&B
+	&BM
+	&K
+	&KM
+	&MM
+
+EXPRESSION:
+	TERM E
+	
+
+TERM:
+	FACTOR T
+
+E:
+	Jam TERM E
+	Kam TERM E
+	λ
+
+T:
+	Zarb FACTOR T
+	Tagsim FACTOR T
+	Bagimonde FACTOR T
+	λ
+
+FACTOR:
+	IDENTIFIER
+	( EXPRESSION )
+
+
+
+------------------------
+
+FIRST(S): {ε, Benevis, Begir, agar, ta, id, Sahih, Ashari, Harf}
+FIRST (START): {Benveis, Begir, agar, ta, id, Sahih, Ashari, Harf}
+FIRST (ID_OP): { = , YekiBala, YekiPain}
+FIRST (SERIES_EXPRESSION): { , }
+FRIST (SERIES_EXPRESSION'): { , , λ}
+FIRST (SERIES_ID): {,}
+FIRST (SERIES_ID'): {, , λ}
+FIRST (SINGULAROP): {YeiBala, YekiPain}
+FIRST (TYPE): {Sahih, Ashari, Harf}
+FIRST (BOOLEANEXPRESSION): {id, num, (}
+FIRST (IDENTIFIER): {id, num}
+FIRST (OPB): {&B, &BM, &K, &KM, &MM}
+FIRST (EXPRESSION): {id, num, (}
+FIRST (TERM): {id, num, (}
+FIRST (FACTOR): {id, num, (}
+FIRST (E): {Jam, kam, λ}
+FIRST (T): {Zarb, Tagsim, Bagimonde, λ}
+
+-------------------------
+
+FOLLOW(S): {$, ]}
+FOLLOW (START): {$, ]}
+FOLLOW (ID_OP): {Benevis, Begir, agar, ta, id, Sahih, Ashari, Harf, $, ]}
+FOLLOW (SERIES_EXPRESSION): { ) } 
+FOLLOW (SERIES_EXPRESSION'): { ) } 
+FOLLOW (SERIES_id): { ) }
+FOLLOW (SERIES_id'): { ) }
+FOLLOW (BOOLEANEXPRESSION): { } }
+FOLLOW (TYPE): { id }
+FOLLOW (SINGULAROP): {^}
+FOLLOW (IDENTIFIER): { Zarb, Tagsim, Bagimonde, Jam, Kam, ), &B, &BM, &K, &KM, &MM, , , ^, } }
+FOLLOW (OPB): { &B, &BM, &K, &KM, &MM }
+FOLLOW (EXPRESSION): { 	), &B, &BM, &K, &KM, &MM, , , ^, } }
+FOLLOW (TERM): {Jam, Kam, ), &B, &BM, &K, &KM, &MM, , , ^, } }
+FOLLOW (E): { 	), &B, &BM, &K, &KM, &MM, , , ^, } }
+FOLLOW (T): { Jam, Kam, ), &B, &BM, &K, &KM, &MM, , , ^, } }
+FOLLOW (FACTOR): { Zarb, Tagsim, Bagimonde, Jam, Kam, ), &B, &BM, &K, &KM, &MM, , , ^, } }
