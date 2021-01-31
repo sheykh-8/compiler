@@ -55,11 +55,6 @@ class Parser {
                             lastVariableType = 0
                         }
                     }
-                    //print errors
-                    if (errors.isNotEmpty()) {
-                        println(errors[0])
-                        errors.removeAt(0)
-                    }
 
 
                     stack.pop()
@@ -81,16 +76,30 @@ class Parser {
                  * table check is an array of terminals & non-terminals. if it's empty, there is an error.
                  */
                 val tableCheck = predictTable.get(stack.peek(), ctoken.tag)
+
                 if (tableCheck.isEmpty()) {
                     println()
                     println("production was empty:")
                     println("${stack.peek()} ${ctoken.lexeme}")
                     return false
                 }
-                stack.pop()
-                for (i in tableCheck.reversedArray()) {
-                    if (i != Tag.LANDA) {
-                        stack.push(i)
+                if (tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
+                    var e: String
+                    if (stack.peek() == NonTerminal.S) {
+                        e = "Error : Invalid Token in line ${ctoken.lineIndex}"
+                        table.proceed()
+                        ctoken = table.currentToken
+                    } else {
+                        e = "Error : Invalid Token in line ${ctoken.lineIndex}"
+                        stack.pop()
+                    }
+                    errors.add(e)
+                } else {
+                    stack.pop()
+                    for (i in tableCheck.reversedArray()) {
+                        if (i != Tag.LANDA) {
+                            stack.push(i)
+                        }
                     }
                 }
             }

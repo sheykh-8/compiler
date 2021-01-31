@@ -123,7 +123,7 @@ FIRST (T): {Zarb, Tagsim, Bagimonde, λ}
 
 -------------------------
 
-FOLLOW(S): {$, ]}
+FOLLOW (S): {$, ]}
 FOLLOW (START): {$, ]}
 FOLLOW (ID_OP): {Benevis, Begir, agar, ta, id, Sahih, Ashari, Harf, $, ]}
 FOLLOW (SERIES_EXPRESSION): { ) } 
