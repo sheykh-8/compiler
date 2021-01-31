@@ -33,7 +33,7 @@ class Parser {
              */
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 errors.forEach(::println)
-                return true
+                return errors.size == 0
             } else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
 
                 //println(" ${stack.peek()}  ${ctoken.lexeme}")
@@ -78,7 +78,8 @@ class Parser {
                  * table check is an array of terminals & non-terminals. if it's empty, there is an error.
                  */
                 val tableCheck = predictTable.get(stack.peek(), ctoken.tag)
-
+                println(stack.peek())
+                println(ctoken.lexeme)
                 if (tableCheck.isEmpty()) {
                     println()
                     println("production was empty:")
