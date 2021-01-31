@@ -64,8 +64,8 @@ class Parser {
                     ctoken = table.currentToken
 
                 } else {
+                    errors.add("Error : Missing ${Tag.intToTerminal(stack.peek())} in line ${ctoken.lineIndex}")
                     stack.pop()
-                    errors.add("Error : Missing ${intToTerminal(stack.peek())} in line ${ctoken.lineIndex}")
                 }
             } else {
                 /**
@@ -108,7 +108,6 @@ class Parser {
         }
 
     }
-
 
 
     companion object {

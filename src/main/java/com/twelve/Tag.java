@@ -10,13 +10,13 @@ public class Tag {
             TERMINATOR = 1027, QUOTATIONS = 1028, COMA = 1029, SCAN = 1030, PRINT = 1031, STRING = 1032,
             OPEN_CURLY_BRACES = 1033, CLOSE_CURLY_BRACES = 1034, END = 1035, LANDA = 1036, CHARACTER = 1037;
 
-    public static String intToTerminal(int terminal) throws ClassNotFoundException, IllegalAccessException {
-        Field[] fields = Class.forName("Tag").getDeclaredFields();
+    public static String intToTerminal(int terminal) throws IllegalAccessException {
+        Field[] fields = Tag.class.getDeclaredFields();
         for (Field field : fields) {
-            if (terminal = field.getInt(null)) {
-               
+            if (terminal == field.getInt(null)) {
+                return field.getName();
             }
         }
-
+        return "";
     }
 }
