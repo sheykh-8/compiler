@@ -33,6 +33,13 @@ class Parser {
              * pop the stack, check the predict table & if there is a rule push the items to the stack and in case of no rules it's a syntax error.
              */
             println("1" + NonTerminal.intToNonTerminal(stack.peek()))
+            if (stack.peek() == Tag.END && ctoken.tag != Tag.END) {
+                while (ctoken.tag != Tag.TERMINATOR && ctoken.tag != Tag.END) {
+                    table.proceed()
+                    ctoken = table.currentToken
+                }
+                stack.push(NonTerminal.S)
+            }
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 errors.forEach(::println)
                 return errors.size == 0

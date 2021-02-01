@@ -164,7 +164,6 @@ class Recognizer constructor(private val reader: Reader) {
                         state = 3
                     } else {
                         checkToken(state, sb + 'M')
-                        handleMissingSpace()
                         sb = ""
                         state = 0
                         readNext = false
