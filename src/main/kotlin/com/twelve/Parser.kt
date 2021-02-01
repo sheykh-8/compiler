@@ -88,11 +88,19 @@ class Parser {
                     if (isFirstNonTerminal && stack.peek() == NonTerminal.S) {
                         isFirstNonTerminal = false
 
-                        e = "Error : Invalid Token in line ${ctoken.lineIndex}"
+                        e = "Error : Can not start with ${Tag.intToTerminal(ctoken.tag)}\"${ctoken.tag}\" " +
+                                "in line ${ctoken.lineIndex}"
+
                         table.proceed()
                         ctoken = table.currentToken
                     } else {
-                        e = "Error : Invalid Token in line ${ctoken.lineIndex}"
+                        val expectation =
+                            if (isTerminal(stack.peek()))
+                                Tag.intToTerminal(stack.peek())
+                            else
+                                NonTerminal.intToNonTerminal(stack.peek())
+
+                        e = "Error : Looking for $expectation , Found ${Tag.intToTerminal(ctoken.tag)}"
                         stack.pop()
                     }
                     errors.add(e)

@@ -12,11 +12,11 @@ public class Tag {
 
     public static String intToTerminal(int terminal) throws IllegalAccessException {
         Field[] fields = Tag.class.getDeclaredFields();
-        for (Field field : fields) {
-            if (terminal == field.getInt(null)) {
+        for (Field field : fields)
+            if (terminal == field.getInt(null))
                 return field.getName();
-            }
-        }
+
+
         return "";
     }
 }
