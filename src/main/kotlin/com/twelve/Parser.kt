@@ -23,7 +23,8 @@ class Parser {
         var lastVariableType = 0
         var isFirstNonTerminal = true
 
-        while (true) {
+        while (stack.isNotEmpty()) {
+
             /**
              * process: check if stacks top element is the same as the input
              * then:
@@ -36,7 +37,6 @@ class Parser {
                 errors.forEach(::println)
                 return errors.size == 0
             } else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
-
 
 
                 if (stack.peek() == ctoken.tag) {
@@ -115,7 +115,8 @@ class Parser {
                 }
             }
         }
-
+        errors.forEach(::println)
+        return errors.size == 0
     }
 
 

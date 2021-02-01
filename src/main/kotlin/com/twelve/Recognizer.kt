@@ -19,22 +19,32 @@ class Recognizer constructor(private val reader: Reader) {
         var sb = ""
         var stringState = false
         var charState = false
+        var readNext = true
+        var ch = ' '//temp init
 
         while (i != -1) {
-            val ch = i.toChar()
-            if (ch == '\n') lineIndex++
-            i = reader.read()
+            if (readNext) {
+                ch = i.toChar()
+                if (ch == '\n') lineIndex++
+                i = reader.read()
+            } else
+                readNext = true
 
+            println("state = $state")
 
             if (!charState && !stringState && ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
                 if (state == 68) {
-                    sb += '0'
-                    checkToken(69, sb)
-                    errors.add("Error : Invalid Number in line $lineIndex")
+                    handle68State(sb)//insert temp valid Float
                     state = 0
                     sb = ""
                     continue
+                } else if (arrayOf(2, 4, 6).contains(state)) {
+                    checkToken(state, sb.substring(0, sb.length - 1))
+                    handleMissingSpace()
+                    sb = ""
+                    state = 0
+                    readNext = false
                 }
 
                 checkToken(state, sb)
@@ -46,23 +56,21 @@ class Recognizer constructor(private val reader: Reader) {
             if (!charState && !stringState && type > -1) {
 
                 if (state == 68) {
-                    state = 0
-                    sb = ""
-                    errors.add("Error : Invalid Number in line $lineIndex")
-                    continue
-                }
-
-                checkToken(state, sb)
+                    handle68State(sb)//insert temp valid Float
+                } else if (arrayOf(2, 4, 6).contains(state)) {
+                    checkToken(state, sb.substring(0, sb.length - 1))
+                    handleMissingSpace()
+                    readNext = false
+                } else
+                    checkToken(state, sb)
                 saveToken(type, ch.toString())
-                sb = ""
-                state = 0
-                continue
 
+                state = 0
+                sb = ""
+                continue
             }
 
             sb += ch
-
-
 
             when (state) {
                 0 -> {
@@ -118,6 +126,7 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 70
                         }
                         else -> {
+                            println(ch)
                             state = 0
                             sb = ""
                             errors.add("Error : Invalid Character in line $lineIndex")
@@ -138,6 +147,8 @@ class Recognizer constructor(private val reader: Reader) {
                         else -> {
                             state = 0
                             sb = ""
+                            checkToken(2, sb + 'B')//insert temp valid Comprator
+                            readNext = false
                             errors.add("Error : Invalid Comparator in line $lineIndex")
 
                         }
@@ -148,9 +159,10 @@ class Recognizer constructor(private val reader: Reader) {
                         state = 3
                     } else {
                         checkToken(state, sb.substring(0, sb.length - 1))
-                        val statePair = handleMissingSpace(ch)
-                        sb = statePair.first
-                        state = statePair.second
+                        handleMissingSpace()
+                        sb = ""
+                        state = 0
+                        readNext = false
 
                     }
                 }
@@ -159,9 +171,10 @@ class Recognizer constructor(private val reader: Reader) {
                         state = 5
                     } else {
                         checkToken(state, sb.substring(0, sb.length - 1))
-                        val statePair = handleMissingSpace(ch)
-                        sb = statePair.first
-                        state = statePair.second
+                        handleMissingSpace()
+                        sb = ""
+                        state = 0
+                        readNext = false
                     }
                 }
                 6 -> {
@@ -169,9 +182,10 @@ class Recognizer constructor(private val reader: Reader) {
                         state = 7
                     } else {
                         checkToken(state, sb.substring(0, sb.length - 1))
-                        val statePair = handleMissingSpace(ch)
-                        sb = statePair.first
-                        state = statePair.second
+                        handleMissingSpace()
+                        sb = ""
+                        state = 0
+                        readNext = false
 
                     }
                 }
@@ -194,8 +208,10 @@ class Recognizer constructor(private val reader: Reader) {
                     if (ch.isLetterOrDigit() || ch == '_') {
                         state = 14
                     } else {
+                        checkToken(state, sb)// insert temp valid
                         state = 0
                         sb = ""
+                        readNext = false
                         errors.add("Error : \'$ch\' couldn't be part of a method or variable name in line $lineIndex")
                     }
                 }
@@ -255,6 +271,7 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 14
                         }
                         else -> {
+                            checkToken(state, sb)//insert temp token
                             state = 0
                             sb = ""
                             errors.add("Error : \'$ch\' couldn't be part of a method or variable name in line $lineIndex")
@@ -273,6 +290,7 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 14
                         }
                         else -> {
+                            checkToken(state, sb)//insert temp token
                             state = 0
                             sb = ""
                             errors.add("Error : \'$ch\' couldn't be part of a method or variable name in line $lineIndex")
@@ -363,9 +381,11 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 68
                         }
                         else -> {
-                            val statePair = handleMissingSpace(ch)
-                            sb = statePair.first
-                            state = statePair.second
+                            checkToken(state, sb)
+                            handleMissingSpace()
+                            sb = ""
+                            state = 0
+                            readNext = false
 
                         }
                     }
@@ -374,9 +394,10 @@ class Recognizer constructor(private val reader: Reader) {
                     if (ch.isDigit()) {
                         state = 69
                     } else {
+                        handle68State(sb)//insert temp valid Float
                         state = 0
                         sb = ""
-                        errors.add("Error : Invalid Number in line $lineIndex")
+                        readNext = false
                     }
                 }
                 71 -> {
@@ -422,6 +443,7 @@ class Recognizer constructor(private val reader: Reader) {
                 100 -> {
                     when (ch) {
                         '\'' -> {
+                            saveToken(Tag.CHARACTER, sb)
                             state = 0
                             charState = false
                             sb = ""
@@ -431,14 +453,15 @@ class Recognizer constructor(private val reader: Reader) {
                     }
                 }
                 101 -> {
-                    sb = ""
+
                     saveToken(Tag.CHARACTER, sb)
+                    sb = ""
+                    state = 0
                     if (ch == '\'') {
                         state = 0
                     } else {
                         errors.add("Error : Missing \' in line $lineIndex")
-                        state = nextStateBySingleChar(ch)
-                        sb += ch
+                        readNext = false
                     }
 
                     charState = false
@@ -451,6 +474,12 @@ class Recognizer constructor(private val reader: Reader) {
         if (state == 21)
             errors.add("Error : Missing \" and ^ in the last line")
         errors.forEach(::println)
+    }
+
+    // tokens like 0. or 416541. or 12.
+    private fun handle68State(sb: String) {
+        checkToken(69, sb + '0')
+        errors.add("Error : Invalid Number in line $lineIndex")
     }
 
     private fun reservedOrId(input: Char, check: Char, next: Int): Int {
@@ -600,17 +629,8 @@ class Recognizer constructor(private val reader: Reader) {
 
     }
 
-    private fun handleMissingSpace(ch: Char): Pair<String, Int> {
+    private fun handleMissingSpace() {
         errors.add("Error : Missing space in line $lineIndex")
-
-        val state = nextStateBySingleChar(ch)
-        println("state = $state")
-        println(ch)
-        if (state == -1) {
-            errors.add("Error : Invalid Character in line $lineIndex")
-            return Pair("", 0)
-        } else
-            return Pair("" + ch, state)
     }
 
 }

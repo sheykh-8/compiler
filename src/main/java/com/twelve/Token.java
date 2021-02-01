@@ -22,6 +22,11 @@ public class Token {
 
     @Override
     public String toString() {
-        return this.tag + " " + this.lexeme;
+        try {
+            return Tag.intToTerminal(tag) + " " + this.lexeme;
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        }
+        return " ";
     }
 }
