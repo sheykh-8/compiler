@@ -158,36 +158,55 @@ class Recognizer constructor(private val reader: Reader) {
                     if (ch == 'M') {
                         state = 3
                     } else {
-                        checkToken(state, sb.substring(0, sb.length - 1))
+                        checkToken(state, sb + 'M')
                         handleMissingSpace()
                         sb = ""
                         state = 0
                         readNext = false
-
                     }
+                }
+                3 -> {
+                    checkToken(state, sb.substring(0, sb.length - 1))
+                    handleMissingSpace()
+                    sb = ""
+                    state = 0
+                    readNext = false
                 }
                 4 -> {
                     if (ch == 'M') {
                         state = 5
                     } else {
-                        checkToken(state, sb.substring(0, sb.length - 1))
+                        checkToken(state, sb + 'M')
                         handleMissingSpace()
                         sb = ""
                         state = 0
                         readNext = false
                     }
                 }
+                5 -> {
+                    checkToken(state, sb.substring(0, sb.length - 1))
+                    handleMissingSpace()
+                    sb = ""
+                    state = 0
+                    readNext = false
+                }
                 6 -> {
                     if (ch == 'M') {
                         state = 7
                     } else {
-                        checkToken(state, sb.substring(0, sb.length - 1))
-                        handleMissingSpace()
+                        checkToken(state, sb + 'M')
+                        errors.add("Error : Missing \'M\' in line $lineIndex")
                         sb = ""
                         state = 0
                         readNext = false
-
                     }
+                }
+                7 -> {
+                    checkToken(state, sb.substring(0, sb.length - 1))
+                    handleMissingSpace()
+                    sb = ""
+                    state = 0
+                    readNext = false
                 }
                 8 -> {
                     state = reservedOrId(ch, 's', 9)
