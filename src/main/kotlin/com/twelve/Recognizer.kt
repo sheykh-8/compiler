@@ -58,17 +58,14 @@ class Recognizer constructor(private val reader: Reader) {
                 when {
                     state == 68 -> {
                         handle68State(sb)//insert temp valid Float
-                        readNext = false
 
                     }
                     state == 69 -> {
                         checkToken(state, sb)
-                        readNext = false
                     }
                     arrayOf(2, 4, 6).contains(state) -> {
                         checkToken(state, sb.substring(0, sb.length - 1))
                         handleMissingSpace()
-                        readNext = false
                     }
                     else -> checkToken(state, sb)
                 }
