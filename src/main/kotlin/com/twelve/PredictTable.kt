@@ -320,7 +320,7 @@ class PredictTable {
                 Tag.ADD, Tag.SUB -> {
                     return arrayOf(input, NonTerminal.TERM, NonTerminal.E)
                 }
-                Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN ,Tag.ID-> {
                     return arrayOf(SYNCH)
                 }
             }
@@ -338,7 +338,7 @@ class PredictTable {
                 Tag.MUL, Tag.DIV, Tag.REMAIN -> {
                     return arrayOf(input, NonTerminal.FACTOR, NonTerminal.T)
                 }
-                Tag.WHILE, Tag.IF, Tag.CHAR, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
+                Tag.WHILE, Tag.IF, Tag.CHAR,Tag.ID, Tag.INT, Tag.FLOAT, Tag.PRINT, Tag.SCAN -> {
                     return arrayOf(SYNCH)
                 }
 
@@ -347,6 +347,6 @@ class PredictTable {
         if (Parser.isTerminal(topStack))
             return arrayOf(SYNCH)
 
-        return arrayOf()
+        return arrayOf(SYNCH)
     }
 }
