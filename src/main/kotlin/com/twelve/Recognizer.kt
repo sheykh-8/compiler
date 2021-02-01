@@ -4,6 +4,8 @@ import java.io.Reader
 
 class Recognizer constructor(private val reader: Reader) {
 
+    private val errors = ArrayList<String>()
+
     init {
         extractTokens()
     }
@@ -26,6 +28,15 @@ class Recognizer constructor(private val reader: Reader) {
 
             if (!charState && !stringState && ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0
+                if (state == 68) {
+                    sb += '0'
+                    checkToken(69, sb)
+                    errors.add("Error : Invalid Number in line $lineIndex")
+                    state = 0
+                    sb = ""
+                    continue
+                }
+
                 checkToken(state, sb)
                 sb = ""
                 state = 0
@@ -33,11 +44,20 @@ class Recognizer constructor(private val reader: Reader) {
             }
             val type = checkSingleLetterTokens(ch)
             if (!charState && !stringState && type > -1) {
+
+                if (state == 68) {
+                    state = 0
+                    sb = ""
+                    errors.add("Error : Invalid Number in line $lineIndex")
+                    continue
+                }
+
                 checkToken(state, sb)
                 saveToken(type, ch.toString())
                 sb = ""
                 state = 0
                 continue
+
             }
 
             sb += ch
@@ -98,67 +118,85 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 70
                         }
                         else -> {
-                            state = -1
+                            state = 0
+                            sb = ""
+                            errors.add("Error : Invalid Character in line $lineIndex")
                         }
                     }
                 }
                 1 -> {
-                    state = when (ch) {
+                    when (ch) {
                         'B' -> {
-                            2
+                            state = 2
                         }
                         'K' -> {
-                            4
+                            state = 4
                         }
                         'M' -> {
-                            6
+                            state = 6
                         }
                         else -> {
-                            -1
+                            state = 0
+                            sb = ""
+                            errors.add("Error : Invalid Comparator in line $lineIndex")
+
                         }
                     }
                 }
                 2 -> {
-                    state = if (ch == 'M') {
-                        3
+                    if (ch == 'M') {
+                        state = 3
                     } else {
-                        -1
+                        checkToken(state, sb.substring(0, sb.length - 1))
+                        val statePair = handleMissingSpace(ch)
+                        sb = statePair.first
+                        state = statePair.second
+
                     }
                 }
                 4 -> {
-                    state = if (ch == 'M') {
-                        5
+                    if (ch == 'M') {
+                        state = 5
                     } else {
-                        -1
+                        checkToken(state, sb.substring(0, sb.length - 1))
+                        val statePair = handleMissingSpace(ch)
+                        sb = statePair.first
+                        state = statePair.second
                     }
                 }
                 6 -> {
-                    state = if (ch == 'M') {
-                        7
+                    if (ch == 'M') {
+                        state = 7
                     } else {
-                        -1
+                        checkToken(state, sb.substring(0, sb.length - 1))
+                        val statePair = handleMissingSpace(ch)
+                        sb = statePair.first
+                        state = statePair.second
+
                     }
                 }
                 8 -> {
-                    state = reservedOrId(ch, 's', 8)
+                    state = reservedOrId(ch, 's', 9)
                 }
                 9 -> {
-                    state = reservedOrId(ch, 'h', 9)
+                    state = reservedOrId(ch, 'h', 10)
                 }
                 10 -> {
-                    state = reservedOrId(ch, 'a', 10)
+                    state = reservedOrId(ch, 'a', 11)
                 }
                 11 -> {
-                    state = reservedOrId(ch, 'r', 11)
+                    state = reservedOrId(ch, 'r', 12)
                 }
                 12 -> {
-                    state = reservedOrId(ch, 'i', 12)
+                    state = reservedOrId(ch, 'i', 13)
                 }
                 13, 14, 20, 26, 30, 32, 39, 42, 50, 53, 56, 60, 66, 70, 78, 82 -> {
-                    state = if (ch.isLetterOrDigit() || ch == '_') {
-                        14
+                    if (ch.isLetterOrDigit() || ch == '_') {
+                        state = 14
                     } else {
-                        -1
+                        state = 0
+                        sb = ""
+                        errors.add("Error : \'$ch\' couldn't be part of a method or variable name in line $lineIndex")
                     }
                 }
                 16 -> {
@@ -206,34 +244,38 @@ class Recognizer constructor(private val reader: Reader) {
                     state = reservedOrId(ch, 'a', 32)
                 }
                 33 -> {
-                    state = when {
+                    when {
                         ch == 'e' -> {
-                            34
+                            state = 34
                         }
                         ch == 'a' -> {
-                            43
+                            state = 43
                         }
                         ch.isLetterOrDigit() || ch == '_' -> {
-                            14
+                            state = 14
                         }
                         else -> {
-                            -1
+                            state = 0
+                            sb = ""
+                            errors.add("Error : \'$ch\' couldn't be part of a method or variable name in line $lineIndex")
                         }
                     }
                 }
                 34 -> {
-                    state = when {
+                    when {
                         ch == 'n' -> {
-                            35
+                            state = 35
                         }
                         ch == 'g' -> {
-                            40
+                            state = 40
                         }
                         ch.isLetterOrDigit() || ch == '_' -> {
-                            14
+                            state = 14
                         }
                         else -> {
-                            -1
+                            state = 0
+                            sb = ""
+                            errors.add("Error : \'$ch\' couldn't be part of a method or variable name in line $lineIndex")
                         }
                     }
                 }
@@ -313,23 +355,28 @@ class Recognizer constructor(private val reader: Reader) {
                     state = reservedOrId(ch, 'm', 66)
                 }
                 67 -> {
-                    state = when {
+                    when {
                         ch.isDigit() -> {
-                            67
+                            state = 67
                         }
                         ch == '.' -> {
-                            68
+                            state = 68
                         }
                         else -> {
-                            -1
+                            val statePair = handleMissingSpace(ch)
+                            sb = statePair.first
+                            state = statePair.second
+
                         }
                     }
                 }
                 68, 69 -> {
-                    state = if (ch.isDigit()) {
-                        69
+                    if (ch.isDigit()) {
+                        state = 69
                     } else {
-                        -1
+                        state = 0
+                        sb = ""
+                        errors.add("Error : Invalid Number in line $lineIndex")
                     }
                 }
                 71 -> {
@@ -350,7 +397,7 @@ class Recognizer constructor(private val reader: Reader) {
                             79
                         }
                         else -> {
-                            -1
+                            0
                         }
                     }
                 }
@@ -373,26 +420,37 @@ class Recognizer constructor(private val reader: Reader) {
                     state = reservedOrId(ch, 'n', 82)
                 }
                 100 -> {
-                    state = when (ch) {
-                        '\'' -> -1// empty character ( error massage: character can't be empty)
-                        else -> 101
+                    when (ch) {
+                        '\'' -> {
+                            state = 0
+                            charState = false
+                            sb = ""
+                            errors.add("Error : Character can't be empty , line : $lineIndex")
+                        }
+                        else -> state = 101
                     }
                 }
                 101 -> {
+                    sb = ""
+                    saveToken(Tag.CHARACTER, sb)
                     if (ch == '\'') {
-                        saveToken(Tag.CHARACTER, sb)
-                        sb = ""
                         state = 0
-                        charState = false
                     } else {
-                        state = -1 // invalid character ( error massage: missing \')
+                        errors.add("Error : Missing \' in line $lineIndex")
+                        state = nextStateBySingleChar(ch)
+                        sb += ch
                     }
+
+                    charState = false
                 }
 
 
             }
 
         }
+        if (state == 21)
+            errors.add("Error : Missing \" and ^ in the last line")
+        errors.forEach(::println)
     }
 
     private fun reservedOrId(input: Char, check: Char, next: Int): Int {
@@ -481,4 +539,78 @@ class Recognizer constructor(private val reader: Reader) {
         if (type != -1) saveToken(type, value)
 
     }
+
+    private fun nextStateBySingleChar(ch: Char): Int {
+        val state: Int
+        when {
+            ch == 'A' -> {
+                state = 8
+            }
+            ch == 'H' -> {
+                state = 23
+            }
+            ch == 'S' -> {
+                state = 16
+            }
+            ch == '&' -> {
+                state = 1
+            }
+            ch == '\"' -> {
+                state = 21
+            }
+            ch == '\'' -> {
+                state = 100
+            }
+            ch == 'a' -> {
+                state = 27
+            }
+            ch == 't' -> {
+                state = 31
+            }
+            ch == 'B' -> {
+                state = 33
+            }
+            ch == 'J' -> {
+                state = 51
+            }
+            ch == 'K' -> {
+                state = 54
+            }
+            ch == 'Z' -> {
+                state = 57
+            }
+            ch == 'T' -> {
+                state = 67
+            }
+            ch == 'Y' -> {
+                state = 71
+            }
+            ch.isDigit() -> {
+                state = 67
+            }
+            ch.isLetter() -> {
+                state = 70
+            }
+            else -> {
+                state = -1
+            }
+        }
+
+        return state
+
+    }
+
+    private fun handleMissingSpace(ch: Char): Pair<String, Int> {
+        errors.add("Error : Missing space in line $lineIndex")
+
+        val state = nextStateBySingleChar(ch)
+        println("state = $state")
+        println(ch)
+        if (state == -1) {
+            errors.add("Error : Invalid Character in line $lineIndex")
+            return Pair("", 0)
+        } else
+            return Pair("" + ch, state)
+    }
+
 }

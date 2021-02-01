@@ -31,12 +31,12 @@ class Parser {
              * else:
              * pop the stack, check the predict table & if there is a rule push the items to the stack and in case of no rules it's a syntax error.
              */
+            println("1" + NonTerminal.intToNonTerminal(stack.peek()))
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 errors.forEach(::println)
                 return errors.size == 0
             } else if (isTerminal(stack.peek()) || stack.peek() == Tag.END) {
 
-                //println(" ${stack.peek()}  ${ctoken.lexeme}")
 
 
                 if (stack.peek() == ctoken.tag) {
@@ -48,12 +48,12 @@ class Parser {
                     if (ctoken.tag == Tag.ID) {
                         if (lastVariableType == 0) {
                             if (!variablesType.containsKey(ctoken.lexeme))
-                                errors.add("Undefined variable \" ${ctoken.lexeme} \" in line ${ctoken.lineIndex}")
+                                errors.add("Error : Undefined variable \" ${ctoken.lexeme} \" in line ${ctoken.lineIndex}")
                         } else {
                             if (!variablesType.containsKey(ctoken.lexeme))
                                 variablesType[ctoken.lexeme] = lastVariableType
                             else
-                                errors.add("Duplicate variable \"${ctoken.lexeme}\" in line ${ctoken.lineIndex}")
+                                errors.add("Error : Duplicate variable \"${ctoken.lexeme}\" in line ${ctoken.lineIndex}")
                             lastVariableType = 0
                         }
                     }
@@ -75,12 +75,12 @@ class Parser {
                  * table check is an array of terminals & non-terminals. if it's empty, there is an error.
                  */
                 val tableCheck = predictTable.get(stack.peek(), ctoken.tag)
-                println(stack.peek())
-                println(ctoken.lexeme)
+                println(NonTerminal.intToNonTerminal(stack.peek()))
+                println(Tag.intToTerminal(ctoken.tag))
                 if (tableCheck.isEmpty()) {
                     println()
                     println("production was empty:")
-                    println("${stack.peek()} ${ctoken.lexeme} in line ${ctoken.lineIndex}")
+                    println("${NonTerminal.intToNonTerminal(stack.peek())} ${Tag.intToTerminal(ctoken.tag)} in line ${ctoken.lineIndex}")
                     return false
                 }
                 if (tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
