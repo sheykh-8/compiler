@@ -41,7 +41,6 @@ class Recognizer constructor(private val reader: Reader) {
                     continue
                 } else if (arrayOf(2, 4, 6).contains(state)) {
                     checkToken(state, sb.substring(0, sb.length - 1))
-                    handleMissingSpace()
                     sb = ""
                     state = 0
                     readNext = false
@@ -164,6 +163,7 @@ class Recognizer constructor(private val reader: Reader) {
                         state = 3
                     } else {
                         checkToken(state, sb + 'M')
+                        handleMissingSpace()
                         sb = ""
                         state = 0
                         readNext = false
