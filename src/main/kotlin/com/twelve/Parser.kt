@@ -48,12 +48,12 @@ class Parser {
                     if (ctoken.tag == Tag.ID) {
                         if (lastVariableType == 0) {
                             if (!variablesType.containsKey(ctoken.lexeme))
-                                errors.add("Undefined variable in line ${ctoken.lineIndex}")
+                                errors.add("Undefined variable \" ${ctoken.lexeme} \" in line ${ctoken.lineIndex}")
                         } else {
                             if (!variablesType.containsKey(ctoken.lexeme))
                                 variablesType[ctoken.lexeme] = lastVariableType
                             else
-                                errors.add("Duplicate variable in line ${ctoken.lineIndex}")
+                                errors.add("Duplicate variable \"${ctoken.lexeme}\" in line ${ctoken.lineIndex}")
                             lastVariableType = 0
                         }
                     }
@@ -80,7 +80,7 @@ class Parser {
                 if (tableCheck.isEmpty()) {
                     println()
                     println("production was empty:")
-                    println("${stack.peek()} ${ctoken.lexeme}")
+                    println("${stack.peek()} ${ctoken.lexeme} in line ${ctoken.lineIndex}")
                     return false
                 }
                 if (tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
@@ -88,7 +88,7 @@ class Parser {
                     if (isFirstNonTerminal && stack.peek() == NonTerminal.S) {
                         isFirstNonTerminal = false
 
-                        e = "Error : Can not start with ${Tag.intToTerminal(ctoken.tag)}\"${ctoken.tag}\" " +
+                        e = "Error : Can not start with ${Tag.intToTerminal(ctoken.tag)}\"${ctoken.lexeme}\" " +
                                 "in line ${ctoken.lineIndex}"
 
                         table.proceed()
@@ -100,7 +100,8 @@ class Parser {
                             else
                                 NonTerminal.intToNonTerminal(stack.peek())
 
-                        e = "Error : Looking for $expectation , Found ${Tag.intToTerminal(ctoken.tag)}"
+                        e =
+                            "Error : Looking for $expectation , Found ${Tag.intToTerminal(ctoken.tag)} in line ${ctoken.lineIndex}"
                         stack.pop()
                     }
                     errors.add(e)

@@ -24,6 +24,7 @@ public class Main {
                     System.out.println("\nyou fucked up somewhere");
                 }
             } catch (Exception ex) {
+                ex.printStackTrace();
                 System.out.println("\nthis file doesn't exist.");
             }
         }

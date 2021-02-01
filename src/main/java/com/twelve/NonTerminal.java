@@ -3,7 +3,7 @@ package com.twelve;
 import java.lang.reflect.Field;
 
 public class NonTerminal {
-    public final static Integer START = 1,
+    public final static int START = 1,
             ID_OP = 2,
             SERIES_EXPRESSION = 3,
             SERIES_EXPRESSION_EPS = 4,
