@@ -344,6 +344,8 @@ class PredictTable {
 
             }
         }
+        if (Parser.isTerminal(topStack))
+            return arrayOf(SYNCH)
 
         return arrayOf()
     }
