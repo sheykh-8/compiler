@@ -55,14 +55,24 @@ class Recognizer constructor(private val reader: Reader) {
             val type = checkSingleLetterTokens(ch)
             if (!charState && !stringState && type > -1) {
 
-                if (state == 68) {
-                    handle68State(sb)//insert temp valid Float
-                } else if (arrayOf(2, 4, 6).contains(state)) {
-                    checkToken(state, sb.substring(0, sb.length - 1))
-                    handleMissingSpace()
-                    readNext = false
-                } else
-                    checkToken(state, sb)
+                when {
+                    state == 68 -> {
+                        handle68State(sb)//insert temp valid Float
+                        readNext = false
+
+                    }
+                    state == 69 -> {
+                        checkToken(state, sb)//insert temp valid Float
+                        handleMissingSpace()
+                        readNext = false
+                    }
+                    arrayOf(2, 4, 6).contains(state) -> {
+                        checkToken(state, sb.substring(0, sb.length - 1))
+                        handleMissingSpace()
+                        readNext = false
+                    }
+                    else -> checkToken(state, sb)
+                }
                 saveToken(type, ch.toString())
 
                 state = 0
@@ -409,11 +419,22 @@ class Recognizer constructor(private val reader: Reader) {
                         }
                     }
                 }
-                68, 69 -> {
+                68 -> {
                     if (ch.isDigit()) {
                         state = 69
                     } else {
-                        handle68State(sb)//insert temp valid Float
+                        handle68State(sb)
+                        sb = ""
+                        state = 0
+                        readNext = false
+                    }
+                }
+                69 -> {
+                    if (ch.isDigit()) {
+                        state = 69
+                    } else {
+                        checkToken(state, sb.substring(0, sb.length - 1))//insert temp valid Float
+                        handleMissingSpace()
                         state = 0
                         sb = ""
                         readNext = false
