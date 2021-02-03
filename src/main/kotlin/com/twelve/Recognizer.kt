@@ -118,7 +118,7 @@ class Recognizer constructor(private val reader: Reader) {
                             state = 57
                         }
                         ch == 'T' -> {
-                            state = 67
+                            state = 61
                         }
                         ch == 'Y' -> {
                             state = 71
@@ -643,7 +643,7 @@ class Recognizer constructor(private val reader: Reader) {
                 state = 57
             }
             ch == 'T' -> {
-                state = 67
+                state = 61
             }
             ch == 'Y' -> {
                 state = 71

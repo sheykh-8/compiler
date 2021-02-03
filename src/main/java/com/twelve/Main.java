@@ -11,9 +11,7 @@ public class Main {
     public static void main(String[] args) {
         //Give a file name as command-line argument to compiler to run the scanner.
         if (args.length > 0) {
-            File f = new File(args[0]);
-            try {
-                InputStreamReader reader = new InputStreamReader(new FileInputStream(f));
+            try (InputStreamReader reader = new InputStreamReader(new FileInputStream(new File(args[0])))) {
                 new Recognizer(reader);
                 Parser p = new Parser();
                 boolean res = p.parse();

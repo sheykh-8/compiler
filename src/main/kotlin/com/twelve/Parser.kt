@@ -31,10 +31,10 @@ class Parser {
 
     fun parse(): Boolean {
         val table = SymbolTable.getInstance()
+
         var ctoken = table.currentToken
         var lastVariableType = 0
         var isFirstNonTerminal = true
-
         while (stack.isNotEmpty()) {
 
             /**
@@ -45,21 +45,7 @@ class Parser {
              * pop the stack, check the predict table & if there is a rule push the items to the stack and in case of no rules it's a syntax error.
              */
             //println("1" + NonTerminal.intToNonTerminal(stack.peek()))
-            if (stack.size == 1) {
-                if (stack.peek() == Tag.END && ctoken.tag != Tag.END) {
-                    while (startingTags.contains(ctoken.tag) && ctoken.tag != Tag.END) {
-                        table.proceed()
-                        ctoken = table.currentToken
-                    }
-                    if (ctoken.tag == Tag.TERMINATOR || openCloseBraces.contains(ctoken.tag)) {
-                        table.proceed()
-                        ctoken = table.currentToken
-                    }
-                    if (ctoken.tag != Tag.END)
-                        stack.push(NonTerminal.S)
-                    continue
-                }
-            }
+
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 errors.forEach(::println)
                 return errors.size == 0
@@ -116,11 +102,11 @@ class Parser {
                     println("Error : Looking for $topStackName , found ${Tag.intToTerminal(ctoken.tag)} in line ${ctoken.lineIndex}")
 
 
-                    continue
+                    stack.pop()
                 }
                 if (tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
                     var e: String
-                    if (isFirstNonTerminal && stack.peek() == NonTerminal.S) {
+                    if (stack.peek() == NonTerminal.S) {
                         isFirstNonTerminal = false
 
                         e = "Error : Can not start with ${Tag.intToTerminal(ctoken.tag)}\"${ctoken.lexeme}\" " +
