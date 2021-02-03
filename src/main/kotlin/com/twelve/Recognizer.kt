@@ -30,7 +30,7 @@ class Recognizer constructor(private val reader: Reader) {
             } else
                 readNext = true
 
-            println("state = $state")
+            //println("state = $state")
 
             if (!charState && !stringState && ch.isWhitespace()) {
                 //the last token is consumed by the dfa. check it's state, insert the token in symbol table and reset the state to 0

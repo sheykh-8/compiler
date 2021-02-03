@@ -10,6 +10,18 @@ class Parser {
 
     private val variablesType = TreeMap<String, Int>()
     private val types = arrayOf(Tag.INT, Tag.FLOAT, Tag.CHAR)
+    private val openCloseBraces = arrayOf(Tag.CLOSE_BRACES, Tag.OPEN_BRACES)
+    private val startingTags = arrayOf(
+        Tag.PRINT,
+        Tag.SCAN,
+        Tag.IF,
+        Tag.WHILE,
+        Tag.ID,
+        Tag.INT,
+        Tag.FLOAT,
+        Tag.CHAR
+    )
+
     private val errors = ArrayList<String>()
 
     init {
@@ -32,8 +44,22 @@ class Parser {
              * else:
              * pop the stack, check the predict table & if there is a rule push the items to the stack and in case of no rules it's a syntax error.
              */
-            println("1" + NonTerminal.intToNonTerminal(stack.peek()))
-            
+            //println("1" + NonTerminal.intToNonTerminal(stack.peek()))
+            if (stack.size == 1) {
+                if (stack.peek() == Tag.END && ctoken.tag != Tag.END) {
+                    while (startingTags.contains(ctoken.tag) && ctoken.tag != Tag.END) {
+                        table.proceed()
+                        ctoken = table.currentToken
+                    }
+                    if (ctoken.tag == Tag.TERMINATOR || openCloseBraces.contains(ctoken.tag)) {
+                        table.proceed()
+                        ctoken = table.currentToken
+                    }
+                    if (ctoken.tag != Tag.END)
+                        stack.push(NonTerminal.S)
+                    continue
+                }
+            }
             if (stack.peek() == Tag.END && ctoken.tag == Tag.END) {
                 errors.forEach(::println)
                 return errors.size == 0
@@ -76,13 +102,21 @@ class Parser {
                  * table check is an array of terminals & non-terminals. if it's empty, there is an error.
                  */
                 val tableCheck = predictTable.get(stack.peek(), ctoken.tag)
-                println(NonTerminal.intToNonTerminal(stack.peek()))
-                println(Tag.intToTerminal(ctoken.tag))
+                //println(NonTerminal.intToNonTerminal(stack.peek()))
+                //println(Tag.intToTerminal(ctoken.tag))
+
                 if (tableCheck.isEmpty()) {
-                    println()
-                    println("production was empty:")
-                    println("${NonTerminal.intToNonTerminal(stack.peek())} ${Tag.intToTerminal(ctoken.tag)} in line ${ctoken.lineIndex}")
-                    return false
+                    //println()
+                    //println("production was empty:")
+                    val topStackName = if (isTerminal(stack.peek()))
+                        Tag.intToTerminal(stack.peek())
+                    else
+                        NonTerminal.intToNonTerminal(stack.peek())
+
+                    println("Error : Looking for $topStackName , found ${Tag.intToTerminal(ctoken.tag)} in line ${ctoken.lineIndex}")
+
+
+                    continue
                 }
                 if (tableCheck[PredictTable.TYPE] == PredictTable.SYNCH) {
                     var e: String

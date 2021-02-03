@@ -18,14 +18,14 @@ public class Main {
                 Parser p = new Parser();
                 boolean res = p.parse();
                 if (res) {
-                    System.out.println("\nHooray!! this has the correct syntax!");
+                    System.out.println("\nCompiled successfully");
                     new LanguageConverter(PATH); //Compile and Run converted code
                 } else {
-                    System.out.println("\nyou fucked up somewhere");
+                    System.out.println("Error : Failed to compile");
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
-                System.out.println("\nthis file doesn't exist.");
+                System.out.println("Error : Source file is not available");
             }
         }
     }

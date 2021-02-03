@@ -152,7 +152,7 @@ public class LanguageConverter {
         File f = new File(path + File.separator + "tmp.c");
         if (!f.exists()) {
             boolean res = f.createNewFile();
-            System.out.println("file created: " + res);
+            //System.out.println("file created: " + res);
         }
         FileWriter fileWriter = new FileWriter(f);
         fileWriter.write(input.toString());
